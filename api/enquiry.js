@@ -26,6 +26,21 @@ async function readBody(req) {
   return body || {};
 }
 
+async function verifyRecaptcha(token) {
+  const secret = process.env.RECAPTCHA_SECRET_KEY;
+  if (!secret) return true; // not configured yet — don't block submissions
+  if (!token) return false;
+
+  const params = new URLSearchParams({ secret, response: token });
+  const res = await fetch('https://www.google.com/recaptcha/api/siteverify', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+    body: params.toString(),
+  });
+  const result = await res.json();
+  return result.success === true && (result.score === undefined || result.score >= 0.5);
+}
+
 module.exports = async (req, res) => {
   if (req.method !== 'POST') {
     res.status(405).json({ error: 'Method not allowed' });
@@ -44,6 +59,11 @@ module.exports = async (req, res) => {
     }
     if (!EMAIL_RE.test(String(body.email || '').trim())) {
       return res.status(400).json({ error: 'Please provide a valid email address' });
+    }
+
+    const humanCheck = await verifyRecaptcha(body.recaptchaToken);
+    if (!humanCheck) {
+      return res.status(400).json({ error: 'Spam check failed. Please try again.' });
     }
 
     const entry = {
