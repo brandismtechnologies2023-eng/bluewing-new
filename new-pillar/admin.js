@@ -280,6 +280,7 @@
     $('#blog-excerpt').value = post ? post.excerpt : '';
     $('#blog-category').value = post ? post.category : '';
     $('#blog-tags').value = post && post.tags ? post.tags.join(', ') : '';
+    $('#blog-author').value = post ? (post.authorId || '') : '';
     blogRTE.setHTML(post ? post.content : '');
     var mediaType = post ? (post.mediaType || 'grid') : 'grid';
     $all('input[name="blog-media-type"]').forEach(function (r) { r.checked = r.value === mediaType; });
@@ -301,6 +302,7 @@
       content: blogRTE.getHTML(),
       category: $('#blog-category').value.trim(),
       tags: $('#blog-tags').value.split(',').map(function (s) { return s.trim(); }).filter(Boolean),
+      authorId: $('#blog-author').value,
       mediaType: $('input[name="blog-media-type"]:checked').value,
       media: blogUploader.getItems(),
       videoUrl: $('#blog-video-url').value.trim(),
@@ -580,11 +582,104 @@
     }
   }
 
+  /* ---------- AUTHORS (Settings tab) ---------- */
+  var authorUploader = createImageUploader($('#author-image-uploader'), $('#author-image-input'), $('#author-image-thumbs'), []);
+  var authors = [];
+
+  function renderAuthorsList() {
+    var el = $('#authors-list');
+    if (!authors.length) {
+      el.innerHTML = '<div class="empty-note">No authors yet. Click "New author" to add one.</div>';
+      return;
+    }
+    el.innerHTML = authors.map(function (a) {
+      return '<div class="item-card">' +
+        (a.image ? '<img src="' + esc(a.image) + '">' : '<div style="width:56px;height:56px;background:#eee;border-radius:var(--r)"></div>') +
+        '<div class="info"><h4>' + esc(a.name) + '</h4><p>' + esc(a.designation || '') + '</p></div>' +
+        '<div class="actions">' +
+        '<button class="btn btn-sm" data-edit="' + a.id + '">Edit</button>' +
+        '<button class="btn btn-sm btn-danger" data-del="' + a.id + '">Delete</button>' +
+        '</div></div>';
+    }).join('');
+    $all('[data-edit]', el).forEach(function (b) {
+      b.addEventListener('click', function () { openAuthorModal(authors.find(function (a) { return a.id === b.dataset.edit; })); });
+    });
+    $all('[data-del]', el).forEach(function (b) {
+      b.addEventListener('click', function () { deleteAuthor(b.dataset.del); });
+    });
+  }
+
+  function populateAuthorSelect() {
+    var sel = $('#blog-author');
+    var current = sel.value;
+    sel.innerHTML = '<option value="">No author</option>' + authors.map(function (a) {
+      return '<option value="' + esc(a.id) + '">' + esc(a.name) + '</option>';
+    }).join('');
+    sel.value = current;
+  }
+
+  async function loadAuthors() {
+    authors = await api('/api/authors');
+    renderAuthorsList();
+    populateAuthorSelect();
+  }
+
+  function openAuthorModal(a) {
+    $('#author-modal-title').textContent = a ? 'Edit author' : 'New author';
+    $('#author-id').value = a ? a.id : '';
+    $('#author-name').value = a ? a.name : '';
+    $('#author-designation').value = a ? a.designation : '';
+    authorUploader.setItems(a && a.image ? [{ url: a.image }] : []);
+    openModal('author-modal');
+  }
+  $('#author-new-btn').addEventListener('click', function () { openAuthorModal(null); });
+
+  $('#author-save-btn').addEventListener('click', async function () {
+    var name = $('#author-name').value.trim();
+    if (!name) { toast('Name is required', true); return; }
+    var items = authorUploader.getItems();
+    var payload = {
+      id: $('#author-id').value || undefined,
+      name: name,
+      designation: $('#author-designation').value.trim(),
+      image: items.length ? items[items.length - 1].url : '',
+    };
+    var btn = $('#author-save-btn');
+    btn.disabled = true; btn.textContent = 'Saving…';
+    try {
+      if (payload.id) {
+        await api('/api/authors', { method: 'PUT', body: JSON.stringify(payload) });
+      } else {
+        delete payload.id;
+        await api('/api/authors', { method: 'POST', body: JSON.stringify(payload) });
+      }
+      closeModal('author-modal');
+      toast('Author saved');
+      await loadAuthors();
+    } catch (err) {
+      toast(err.message, true);
+    } finally {
+      btn.disabled = false; btn.textContent = 'Save author';
+    }
+  });
+
+  async function deleteAuthor(id) {
+    if (!confirm('Delete this author? Posts assigned to them will show no author.')) return;
+    try {
+      await api('/api/authors?id=' + encodeURIComponent(id), { method: 'DELETE' });
+      toast('Deleted');
+      await loadAuthors();
+    } catch (err) {
+      toast(err.message, true);
+    }
+  }
+
   /* ---------- init ---------- */
   function initAppData() {
     loadBlog().catch(function (e) { toast(e.message, true); });
     loadProjects().catch(function (e) { toast(e.message, true); });
     loadCareers().catch(function (e) { toast(e.message, true); });
+    loadAuthors().catch(function (e) { toast(e.message, true); });
   }
 
   checkSession();

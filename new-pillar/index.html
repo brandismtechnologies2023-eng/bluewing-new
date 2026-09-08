@@ -31,6 +31,7 @@
       <button class="nav-item is-active" data-tab="blog">Blog</button>
       <button class="nav-item" data-tab="projects">Projects</button>
       <button class="nav-item" data-tab="careers">Careers — Current Openings</button>
+      <button class="nav-item" data-tab="settings">Settings — Authors</button>
     </nav>
     <button id="logout-btn" class="btn btn-ghost logout-btn">Log out</button>
   </aside>
@@ -64,6 +65,16 @@
       <div class="list" id="careers-list"></div>
     </section>
 
+    <!-- SETTINGS / AUTHORS TAB -->
+    <section class="tab-panel" id="tab-settings">
+      <div class="panel-head">
+        <h2>Authors</h2>
+        <button class="btn btn-primary" id="author-new-btn">+ New author</button>
+      </div>
+      <p style="color:var(--steel);font-size:12.5px;margin-top:-14px;margin-bottom:20px">Manage the authors shown on blog posts — name, designation and photo. Assign an author to a post from the Blog tab.</p>
+      <div class="list" id="authors-list"></div>
+    </section>
+
   </main>
 </div>
 
@@ -92,6 +103,10 @@
           <input type="text" id="blog-tags" placeholder="e.g. precast, ahmedabad, epc">
         </label>
       </div>
+
+      <label>Author
+        <select id="blog-author"><option value="">No author</option></select>
+      </label>
 
       <label>Content
         <div class="rte" id="blog-content-rte"></div>
@@ -232,6 +247,34 @@
     <div class="modal-foot">
       <button class="btn btn-ghost" data-close="career-modal">Cancel</button>
       <button class="btn btn-primary" id="career-save-btn">Save opening</button>
+    </div>
+  </div>
+</div>
+
+<!-- ===== AUTHOR EDITOR MODAL ===== -->
+<div class="modal" id="author-modal" hidden>
+  <div class="modal-box">
+    <div class="modal-head">
+      <h3 id="author-modal-title">New author</h3>
+      <button class="modal-x" data-close="author-modal">&times;</button>
+    </div>
+    <div class="modal-body">
+      <input type="hidden" id="author-id">
+      <label>Name
+        <input type="text" id="author-name" required placeholder="e.g. Pankti Vasoya">
+      </label>
+      <label>Designation
+        <input type="text" id="author-designation" placeholder="e.g. Content Writer">
+      </label>
+      <label>Photo</label>
+      <div class="uploader" id="author-image-uploader">
+        <div class="thumbs" id="author-image-thumbs"></div>
+        <input type="file" id="author-image-input" accept="image/*">
+      </div>
+    </div>
+    <div class="modal-foot">
+      <button class="btn btn-ghost" data-close="author-modal">Cancel</button>
+      <button class="btn btn-primary" id="author-save-btn">Save author</button>
     </div>
   </div>
 </div>

@@ -1100,6 +1100,7 @@ h1,h2,h3,h4{margin:0;font-family:var(--f-display);font-weight:600;letter-spacing
 <div class="shell rt__in">
 <div class="rt__side rv">
 <p class="eyebrow" id="bp-category2">Blog</p>
+<div class="byline" id="bp-byline" style="display:none"></div>
 
 <h2>Share this article</h2>
 <p>Republication with attribution is welcome.</p>
@@ -1463,6 +1464,17 @@ h1,h2,h3,h4{margin:0;font-family:var(--f-display);font-weight:600;letter-spacing
       document.getElementById('bp-tags').textContent = 'Tags: ' + p.tags.join(', ');
     }
     renderMedia(p);
+    if (p.authorId) {
+      fetch('/api/authors?id=' + encodeURIComponent(p.authorId)).then(function(r){
+        return r.ok ? r.json() : null;
+      }).then(function(a){
+        if (!a) return;
+        var el = document.getElementById('bp-byline');
+        el.style.display = '';
+        el.innerHTML = (a.image ? '<img src="' + esc(a.image) + '" alt="' + esc(a.name) + '" width="46" height="46" loading="lazy" onerror="this.style.display=\'none\'">' : '') +
+          '<div><b>' + esc(a.name) + '</b>' + (a.designation ? '<span>' + esc(a.designation) + '</span>' : '') + '</div>';
+      }).catch(function(){});
+    }
   }).catch(function(){
     document.getElementById('bp-title').textContent = 'Article not found';
     document.getElementById('bp-lead').textContent = 'This article may have been removed or the link is incorrect.';

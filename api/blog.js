@@ -58,6 +58,7 @@ module.exports = async (req, res) => {
         content: body.content || '',
         category: body.category || '',
         tags: Array.isArray(body.tags) ? body.tags : [],
+        authorId: body.authorId || '',
         mediaType: body.mediaType || 'grid',
         media: Array.isArray(body.media) ? body.media : [],
         videoUrl: body.videoUrl || '',
