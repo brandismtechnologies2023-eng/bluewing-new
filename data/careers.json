@@ -1,0 +1,24 @@
+[
+  {
+    "id": "seed-qa-qc-engineer",
+    "title": "QA / QC Engineer",
+    "tag": "Quality Assurance",
+    "location": "Ahmedabad",
+    "type": "Full-time",
+    "description": "Run inspection and test plans, material approvals and third-party testing across structural stages. ISO 9001 exposure preferred; based at our Ahmedabad sites.",
+    "applyEmail": "careers@bluewingconstruction.com",
+    "date": "2026-01-01",
+    "active": true
+  },
+  {
+    "id": "seed-site-engineer-civil",
+    "title": "Site Engineer — Civil",
+    "tag": "Site Engineering",
+    "location": "Ahmedabad",
+    "type": "Full-time",
+    "description": "Own setting-out, RCC works and finishing co-ordination on a live residential or industrial site in Ahmedabad. 2–5 years' experience, reporting directly to the project manager.",
+    "applyEmail": "careers@bluewingconstruction.com",
+    "date": "2026-01-01",
+    "active": true
+  }
+]
