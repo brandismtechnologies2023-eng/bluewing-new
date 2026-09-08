@@ -166,9 +166,32 @@
     container.appendChild(toolbar);
     container.appendChild(editable);
 
+    function refreshEmptyState() {
+      var isEmpty = editable.textContent.replace(/​/g, '').trim() === '';
+      editable.classList.toggle('is-empty', isEmpty);
+    }
+    editable.addEventListener('input', refreshEmptyState);
+    editable.addEventListener('focus', function () {
+      // Empty contenteditable elements can fail to accept a caret on the
+      // first click in some browsers; a lone <br> gives it something to attach to.
+      if (editable.classList.contains('is-empty') && !editable.querySelector('br')) {
+        editable.innerHTML = '<p><br></p>';
+      }
+    });
+
     return {
-      getHTML: function () { return editable.innerHTML.trim(); },
-      setHTML: function (html) { editable.innerHTML = html || ''; },
+      getHTML: function () {
+        return editable.classList.contains('is-empty') ? '' : editable.innerHTML.trim();
+      },
+      setHTML: function (html) {
+        if (html && html.trim()) {
+          editable.innerHTML = html;
+          editable.classList.remove('is-empty');
+        } else {
+          editable.innerHTML = '<p><br></p>';
+          editable.classList.add('is-empty');
+        }
+      },
     };
   }
 
@@ -766,7 +789,9 @@
         return;
       }
       gridEl.innerHTML = media.map(function (m) {
-        return '<div class="media-item"><img src="' + esc(m.url) + '" loading="lazy"><button type="button" class="rm" data-url="' + esc(m.url) + '">Delete</button></div>';
+        return '<div class="media-item"><img src="' + esc(m.url) + '" loading="lazy">' +
+          (m.source === 'upload' ? '<button type="button" class="rm" data-url="' + esc(m.url) + '">Delete</button>' : '') +
+          '</div>';
       }).join('');
       $all('.rm', gridEl).forEach(function (b) {
         b.addEventListener('click', function (e) {
