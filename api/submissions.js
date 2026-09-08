@@ -1,0 +1,44 @@
+const { list, del } = require('@vercel/blob');
+const { requireAuth } = require('./_lib/auth');
+
+module.exports = async (req, res) => {
+  if (!requireAuth(req, res)) return;
+
+  try {
+    if (!process.env.BLOB_READ_WRITE_TOKEN) {
+      return res.status(500).json({ error: 'Storage is not configured yet. Enable Vercel Blob storage for this project.' });
+    }
+
+    const { type } = req.query || {};
+    const formType = type === 'vendor-registration' ? 'vendor-registration' : 'project-enquiry';
+    const prefix = `submissions/${formType}/`;
+
+    if (req.method === 'GET') {
+      const items = [];
+      let cursor;
+      do {
+        const page = await list({ prefix, cursor, limit: 100 });
+        items.push(...page.blobs);
+        cursor = page.hasMore ? page.cursor : undefined;
+      } while (cursor);
+
+      const entries = await Promise.all(items.map(async (b) => {
+        const r = await fetch(b.url);
+        return r.ok ? r.json() : null;
+      }));
+      const clean = entries.filter(Boolean).sort((a, b) => new Date(b.submittedAt) - new Date(a.submittedAt));
+      return res.status(200).json(clean);
+    }
+
+    if (req.method === 'DELETE') {
+      const { id } = req.query || {};
+      if (!id) return res.status(400).json({ error: 'id is required' });
+      await del(`${prefix}${id}.json`);
+      return res.status(200).json({ ok: true });
+    }
+
+    res.status(405).json({ error: 'Method not allowed' });
+  } catch (err) {
+    res.status(500).json({ error: err.message || 'Server error' });
+  }
+};

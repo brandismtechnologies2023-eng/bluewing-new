@@ -11,7 +11,7 @@
 <meta property="og:site_name" content="BlueWing Group">
 <meta property="og:locale" content="en_IN">
 <meta name="twitter:card" content="summary_large_image">
-<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://bluewing.brandismtechnologies.in"><link rel="dns-prefetch" href="https://bluewing.brandismtechnologies.in"><link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 <style>
@@ -1016,7 +1016,7 @@ h1,h2,h3,h4{margin:0;font-family:var(--f-display);font-weight:600;letter-spacing
 <div>
 <p class="mega__h">Turnkey construction</p>
 <a class="mco" href="bluewing-dcpl.html">
-<img src="https://bluewing.brandismtechnologies.in/wp-content/uploads/2026/05/bluwing-icn.png" alt="" width="34" height="34">
+<img decoding="async" src="https://bluewing.brandismtechnologies.in/wp-content/uploads/2026/05/bluwing-icn.png" alt="" width="34" height="34">
 <b>BlueWing DCPL</b><span>EPC and turnkey projects delivered under one contract</span>
 <em>Explore company <svg><use href="#i-arr"/></svg></em>
 </a>
@@ -1030,7 +1030,7 @@ h1,h2,h3,h4{margin:0;font-family:var(--f-display);font-weight:600;letter-spacing
 <div>
 <p class="mega__h">Specialist foundations</p>
 <a class="mco" href="sygnific-infra.html">
-<img src="https://bluewing.brandismtechnologies.in/wp-content/uploads/2026/05/sygnific-icn.png" alt="" width="34" height="34">
+<img decoding="async" src="https://bluewing.brandismtechnologies.in/wp-content/uploads/2026/05/sygnific-icn.png" alt="" width="34" height="34">
 <b>Sygnific Infra</b><span>Diaphragm wall and geotechnical solutions for deep excavation</span>
 <em>Explore company <svg><use href="#i-arr"/></svg></em>
 </a>
@@ -1038,7 +1038,7 @@ h1,h2,h3,h4{margin:0;font-family:var(--f-display);font-weight:600;letter-spacing
 <div>
 <p class="mega__h">Precast manufacturing</p>
 <a class="mco" href="bhaarat-precast.html">
-<img src="https://bluewing.brandismtechnologies.in/wp-content/uploads/2026/05/bhaarat-icn.png" alt="" width="34" height="34">
+<img decoding="async" src="https://bluewing.brandismtechnologies.in/wp-content/uploads/2026/05/bhaarat-icn.png" alt="" width="34" height="34">
 <b>Bhaarat Precast</b><span>Factory-controlled precast components for faster erection</span>
 <em>Explore company <svg><use href="#i-arr"/></svg></em>
 </a>
@@ -1405,12 +1405,12 @@ h1,h2,h3,h4{margin:0;font-family:var(--f-display);font-weight:600;letter-spacing
     if (Array.isArray(p.images) && p.images.length) {
       document.getElementById('pv-gallery-section').style.display = '';
       var hero = document.getElementById('pv-gallery-hero');
-      hero.innerHTML = '<img src="' + esc(p.images[0].url) + '" alt="' + esc(p.title) + '" loading="lazy" width="1400" height="790">';
+      hero.innerHTML = '<img decoding="async" src="' + esc(p.images[0].url) + '" alt="' + esc(p.title) + '" loading="lazy" width="1400" height="790">';
       var rest = p.images.slice(1);
       var gridEl = document.getElementById('pv-gallery-grid');
       if (rest.length) {
         gridEl.innerHTML = rest.map(function(img){
-          return '<img src="' + esc(img.url) + '" alt="' + esc(p.title) + '" loading="lazy" width="600" height="450">';
+          return '<img decoding="async" src="' + esc(img.url) + '" alt="' + esc(p.title) + '" loading="lazy" width="600" height="450">';
         }).join('');
       }
     }

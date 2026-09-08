@@ -830,6 +830,77 @@
     }
   }
 
+  /* ---------- ENQUIRIES TAB ---------- */
+  var FIELD_LABELS = {
+    name: 'Name', company: 'Company', email: 'Email', phone: 'Phone', interest: 'Interest',
+    category: 'Category of supply', city: 'City / state', gst: 'GST number',
+    years: 'Years in business', website: 'Website / catalogue',
+  };
+  var FIELD_ORDER = {
+    'project-enquiry': ['name', 'company', 'email', 'phone', 'interest'],
+    'vendor-registration': ['company', 'name', 'email', 'phone', 'category', 'city', 'gst', 'years', 'website'],
+  };
+
+  $all('.subtab-item').forEach(function (btn) {
+    btn.addEventListener('click', function () {
+      $all('.subtab-item').forEach(function (b) { b.classList.remove('is-active'); });
+      $all('.subtab-panel').forEach(function (p) { p.classList.remove('is-active'); });
+      btn.classList.add('is-active');
+      $('#subtab-' + btn.dataset.subtab).classList.add('is-active');
+    });
+  });
+
+  function renderEnquiries(listEl, entries, formType) {
+    if (!entries.length) {
+      listEl.innerHTML = '<div class="empty-note">No submissions yet.</div>';
+      return;
+    }
+    var order = FIELD_ORDER[formType];
+    listEl.innerHTML = entries.map(function (e) {
+      var f = e.fields || {};
+      var when = e.submittedAt ? new Date(e.submittedAt).toLocaleString() : '';
+      var grid = order.filter(function (k) { return f[k]; }).map(function (k) {
+        return '<div><b>' + esc(FIELD_LABELS[k] || k) + '</b>' + esc(f[k]) + '</div>';
+      }).join('');
+      return '<div class="enquiry-card">' +
+        '<div class="eq-head"><h4>' + esc(f.name || f.company || 'Submission') + '</h4>' +
+        '<span>' + esc(when) + ' &middot; <button class="btn btn-sm btn-danger" data-del="' + esc(e.id) + '" data-type="' + formType + '" style="padding:2px 8px;margin-left:6px">Delete</button></span></div>' +
+        '<div class="eq-grid">' + grid + '</div>' +
+        (f.message ? '<div class="eq-msg">' + esc(f.message) + '</div>' : '') +
+        (e.emailError ? '<div class="eq-err">Email delivery failed: ' + esc(e.emailError) + '</div>' : '') +
+        '</div>';
+    }).join('');
+    $all('[data-del]', listEl).forEach(function (b) {
+      b.addEventListener('click', function () { deleteEnquiry(b.dataset.type, b.dataset.del); });
+    });
+  }
+
+  async function loadEnquiries() {
+    try {
+      var projectEntries = await api('/api/submissions?type=project-enquiry');
+      renderEnquiries($('#enquiries-project-list'), projectEntries, 'project-enquiry');
+    } catch (err) {
+      $('#enquiries-project-list').innerHTML = '<div class="empty-note">' + esc(err.message) + '</div>';
+    }
+    try {
+      var vendorEntries = await api('/api/submissions?type=vendor-registration');
+      renderEnquiries($('#enquiries-vendor-list'), vendorEntries, 'vendor-registration');
+    } catch (err) {
+      $('#enquiries-vendor-list').innerHTML = '<div class="empty-note">' + esc(err.message) + '</div>';
+    }
+  }
+
+  async function deleteEnquiry(type, id) {
+    if (!confirm('Delete this submission? This cannot be undone.')) return;
+    try {
+      await api('/api/submissions?type=' + type + '&id=' + encodeURIComponent(id), { method: 'DELETE' });
+      toast('Deleted');
+      loadEnquiries();
+    } catch (err) {
+      toast(err.message, true);
+    }
+  }
+
   /* ---------- init ---------- */
   function initAppData() {
     loadBlog().catch(function (e) { toast(e.message, true); });
@@ -837,6 +908,7 @@
     loadCareers().catch(function (e) { toast(e.message, true); });
     loadAuthors().catch(function (e) { toast(e.message, true); });
     loadMediaTab().catch(function (e) { toast(e.message, true); });
+    loadEnquiries().catch(function (e) { toast(e.message, true); });
   }
 
   checkSession();
