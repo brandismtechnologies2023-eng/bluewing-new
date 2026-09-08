@@ -244,11 +244,18 @@
         '<span class="badge' + (p.published !== false ? ' on' : '') + '">' + (p.published !== false ? 'Published' : 'Draft') + '</span>' +
         '<div class="actions">' +
         '<button class="btn btn-sm" data-edit="' + p.id + '">Edit</button>' +
+        '<button class="btn btn-sm" data-dup="' + p.id + '">Duplicate</button>' +
         '<button class="btn btn-sm btn-danger" data-del="' + p.id + '">Delete</button>' +
         '</div></div>';
     }).join('');
     $all('[data-edit]', el).forEach(function (b) {
       b.addEventListener('click', function () { openBlogModal(blogPosts.find(function (p) { return p.id === b.dataset.edit; })); });
+    });
+    $all('[data-dup]', el).forEach(function (b) {
+      b.addEventListener('click', function () {
+        var src = blogPosts.find(function (p) { return p.id === b.dataset.dup; });
+        openBlogModal(Object.assign({}, src, { id: '', title: src.title + ' (Copy)', slug: '' }));
+      });
     });
     $all('[data-del]', el).forEach(function (b) {
       b.addEventListener('click', function () { deleteBlog(b.dataset.del); });
@@ -380,7 +387,7 @@
   function renderProjectsList() {
     var el = $('#projects-list');
     if (!projects.length) {
-      el.innerHTML = '<div class="empty-note">No projects added from admin yet. Click "New project" to add one.</div>';
+      el.innerHTML = '<div class="empty-note">No projects yet. Click "New project" to add one.</div>';
       return;
     }
     el.innerHTML = projects.map(function (p) {
@@ -391,11 +398,18 @@
         '<span class="badge' + (p.published !== false ? ' on' : '') + '">' + (p.published !== false ? 'Published' : 'Draft') + '</span>' +
         '<div class="actions">' +
         '<button class="btn btn-sm" data-edit="' + p.id + '">Edit</button>' +
+        '<button class="btn btn-sm" data-dup="' + p.id + '">Duplicate</button>' +
         '<button class="btn btn-sm btn-danger" data-del="' + p.id + '">Delete</button>' +
         '</div></div>';
     }).join('');
     $all('[data-edit]', el).forEach(function (b) {
       b.addEventListener('click', function () { openProjectModal(projects.find(function (p) { return p.id === b.dataset.edit; })); });
+    });
+    $all('[data-dup]', el).forEach(function (b) {
+      b.addEventListener('click', function () {
+        var src = projects.find(function (p) { return p.id === b.dataset.dup; });
+        openProjectModal(Object.assign({}, src, { id: '', title: src.title + ' (Copy)', slug: '', legacyUrl: '' }));
+      });
     });
     $all('[data-del]', el).forEach(function (b) {
       b.addEventListener('click', function () { deleteProject(b.dataset.del); });
@@ -486,11 +500,18 @@
         '<span class="badge' + (c.active !== false ? ' on' : '') + '">' + (c.active !== false ? 'Active' : 'Hidden') + '</span>' +
         '<div class="actions">' +
         '<button class="btn btn-sm" data-edit="' + c.id + '">Edit</button>' +
+        '<button class="btn btn-sm" data-dup="' + c.id + '">Duplicate</button>' +
         '<button class="btn btn-sm btn-danger" data-del="' + c.id + '">Delete</button>' +
         '</div></div>';
     }).join('');
     $all('[data-edit]', el).forEach(function (b) {
       b.addEventListener('click', function () { openCareerModal(careers.find(function (c) { return c.id === b.dataset.edit; })); });
+    });
+    $all('[data-dup]', el).forEach(function (b) {
+      b.addEventListener('click', function () {
+        var src = careers.find(function (c) { return c.id === b.dataset.dup; });
+        openCareerModal(Object.assign({}, src, { id: '', title: src.title + ' (Copy)' }));
+      });
     });
     $all('[data-del]', el).forEach(function (b) {
       b.addEventListener('click', function () { deleteCareer(b.dataset.del); });

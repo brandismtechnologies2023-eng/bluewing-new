@@ -1102,37 +1102,27 @@ h1,h2,h3,h4{margin:0;font-family:var(--f-display);font-weight:600;letter-spacing
 <p class="ph__ld">Writing on construction economics, technique and regulation in India — from the people running the sites.</p>
 </div>
 </section><section class="ins" style="background:var(--paper)"><div class="shell">
-<div class="ins__g rv" id="ins-grid"><a class="art" href="blog/automation-ready-warehouse-design-trends-transforming-gujarats-industrial-sector-in-2026.html">
-<div class="art__im"><img src="https://bluewing.brandismtechnologies.in/wp-content/uploads/2026/05/Automation-Ready-Warehouse-Design-Trends-Transforming-Gujarats-Industrial-Sector-in-2026_Blog-Banner-1-573x654.webp" alt="Automation-Ready Warehouse Design Trends Transforming Gujarat's Industrial Sector in 2026" loading="lazy" width="600" height="400"></div>
-<div><p class="lbl">Construction Industry</p><h3>Automation-Ready Warehouse Design Trends Transforming Gujarat's Industrial Sector in 2026</h3></div></a><a class="art" href="blog/top-construction-trends-in-india-2026-technology-sustainability-infrastructure-boom.html">
-<div class="art__im"><img src="https://bluewing.brandismtechnologies.in/wp-content/uploads/2026/05/Construction-Trends-2026_New-1-573x424.webp" alt="Top Construction Trends in India 2026: Technology, Sustainability &amp; Infrastructure Boom" loading="lazy" width="600" height="400"></div>
-<div><p class="lbl">Construction Techniques</p><h3>Top Construction Trends in India 2026: Technology, Sustainability &amp; Infrastructure Boom</h3></div></a><a class="art" href="blog/construction-quality-in-ahmedabad-are-we-building-fast-or-building-right.html">
-<div class="art__im"><img src="https://bluewing.brandismtechnologies.in/wp-content/uploads/2026/04/Construction-Quality-in-Ahmedabad-Are-We-Building-Fast-or-Building-Right_Banner-1-573x600.webp" alt="Construction Quality in Ahmedabad: Are We Building Fast or Building Right?" loading="lazy" width="600" height="400"></div>
-<div><p class="lbl">Construction Industry</p><h3>Construction Quality in Ahmedabad: Are We Building Fast or Building Right?</h3></div></a><a class="art" href="blog/top-10-advantages-of-precast-construction-in-india.html">
-<div class="art__im"><img src="https://bluewing.brandismtechnologies.in/wp-content/uploads/2026/03/Top-10-Advantages-of-Precast-Construction-in-India-blog-thumb-1-573x805.webp" alt="Top 10 Advantages of Precast Construction in India" loading="lazy" width="600" height="400"></div>
-<div><p class="lbl">Precast Construction</p><h3>Top 10 Advantages of Precast Construction in India</h3></div></a></div>
+<div class="ins__g rv" id="ins-grid"></div>
 <script>
 (function(){
   var grid = document.getElementById('ins-grid');
   if (!grid) return;
-  fetch('/api/blog').then(function(r){ return r.ok ? r.json() : []; }).then(function(posts){
-    if (!Array.isArray(posts) || !posts.length) return;
-    var published = posts.filter(function(p){ return p.published !== false; });
-    if (!published.length) return;
-    var html = published.map(function(p){
-      var img = p.coverImage || (p.media && p.media[0] && p.media[0].url) || '';
-      return '<a class="art" href="blog-post.html?slug=' + encodeURIComponent(p.slug) + '">' +
-        '<div class="art__im">' + (img ? '<img src="' + escapeAttr(img) + '" alt="' + escapeAttr(p.title) + '" loading="lazy" width="600" height="400">' : '') + '</div>' +
-        '<div><p class="lbl">' + escapeHtml(p.category || 'Blog') + '</p><h3>' + escapeHtml(p.title) + '</h3></div></a>';
-    }).join('');
-    grid.insertAdjacentHTML('afterbegin', html);
-  }).catch(function(){});
-  function escapeHtml(s){
+  function esc(s){
     return String(s || '').replace(/[&<>"']/g, function(c){
       return { '&':'&amp;', '<':'&lt;', '>':'&gt;', '"':'&quot;', "'":'&#39;' }[c];
     });
   }
-  function escapeAttr(s){ return escapeHtml(s); }
+  fetch('/api/blog').then(function(r){ return r.ok ? r.json() : []; }).then(function(posts){
+    if (!Array.isArray(posts) || !posts.length) return;
+    var published = posts.filter(function(p){ return p.published !== false; });
+    grid.innerHTML = published.map(function(p){
+      var img = p.coverImage || (p.media && p.media[0] && p.media[0].url) || '';
+      var href = p.legacyUrl || ('blog-post.html?slug=' + encodeURIComponent(p.slug));
+      return '<a class="art" href="' + esc(href) + '">' +
+        '<div class="art__im">' + (img ? '<img src="' + esc(img) + '" alt="' + esc(p.title) + '" loading="lazy" width="600" height="400">' : '') + '</div>' +
+        '<div><p class="lbl">' + esc(p.category || 'Blog') + '</p><h3>' + esc(p.title) + '</h3></div></a>';
+    }).join('');
+  }).catch(function(){});
 })();
 </script>
 </div></section><section class="cta" id="contact">
