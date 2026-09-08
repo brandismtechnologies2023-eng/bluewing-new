@@ -172,8 +172,91 @@
     };
   }
 
-  /* ---------- image uploader (multi) ---------- */
-  function createImageUploader(wrapEl, inputEl, thumbsEl, initial) {
+  /* ---------- media picker popup (Elementor-style) ---------- */
+  function createMediaPicker() {
+    var gridEl = $('#media-picker-grid');
+    var uploadBtn = $('#media-picker-upload-btn');
+    var uploadInput = $('#media-picker-upload-input');
+    var confirmBtn = $('#media-picker-confirm-btn');
+    var hintEl = $('#media-picker-hint');
+    var allMedia = [];
+    var selected = [];
+    var multiple = true;
+    var onSelectCb = null;
+
+    function renderGrid() {
+      if (!allMedia.length) {
+        gridEl.innerHTML = '<div class="empty-note" style="grid-column:1/-1">No images uploaded yet. Click "Upload new image" to add one.</div>';
+      } else {
+        gridEl.innerHTML = allMedia.map(function (m) {
+          var isSel = selected.indexOf(m.url) !== -1;
+          return '<div class="media-item' + (isSel ? ' is-selected' : '') + '" data-url="' + esc(m.url) + '"><img src="' + esc(m.url) + '" loading="lazy"></div>';
+        }).join('');
+        $all('.media-item', gridEl).forEach(function (el) {
+          el.addEventListener('click', function () {
+            var url = el.dataset.url;
+            if (multiple) {
+              var idx = selected.indexOf(url);
+              if (idx === -1) selected.push(url); else selected.splice(idx, 1);
+            } else {
+              selected = [url];
+            }
+            renderGrid();
+          });
+        });
+      }
+      hintEl.textContent = selected.length ? selected.length + ' selected' : '';
+    }
+
+    async function loadMedia() {
+      gridEl.innerHTML = '<div class="empty-note" style="grid-column:1/-1">Loading…</div>';
+      try {
+        allMedia = await api('/api/media');
+        renderGrid();
+      } catch (err) {
+        gridEl.innerHTML = '<div class="empty-note" style="grid-column:1/-1">' + esc(err.message) + '</div>';
+      }
+    }
+
+    uploadBtn.addEventListener('click', function () { uploadInput.click(); });
+    uploadInput.addEventListener('change', async function () {
+      var files = Array.prototype.slice.call(uploadInput.files);
+      uploadInput.value = '';
+      for (var i = 0; i < files.length; i++) {
+        hintEl.textContent = 'Uploading ' + (i + 1) + ' of ' + files.length + '…';
+        try {
+          var url = await uploadFile(files[i]);
+          allMedia.unshift({ url: url });
+          if (multiple) selected.push(url); else selected = [url];
+        } catch (err) {
+          toast('Upload failed: ' + err.message, true);
+        }
+      }
+      renderGrid();
+    });
+
+    confirmBtn.addEventListener('click', function () {
+      if (onSelectCb) onSelectCb(selected.slice());
+      closeModal('media-picker-modal');
+    });
+
+    return {
+      open: function (opts) {
+        opts = opts || {};
+        multiple = opts.multiple !== false;
+        selected = (opts.current || []).slice();
+        onSelectCb = opts.onSelect || null;
+        openModal('media-picker-modal');
+        loadMedia();
+      },
+    };
+  }
+  var mediaPicker = createMediaPicker();
+
+  /* ---------- image uploader (multi or single, backed by the media picker) ---------- */
+  function createImageUploader(addBtn, thumbsEl, initial, opts) {
+    opts = opts || {};
+    var multiple = opts.multiple !== false;
     var items = (initial || []).slice(); // [{url}]
 
     function render() {
@@ -191,23 +274,21 @@
         render();
       }
     });
-    inputEl.addEventListener('change', async function () {
-      var files = Array.prototype.slice.call(inputEl.files);
-      inputEl.value = '';
-      for (var i = 0; i < files.length; i++) {
-        var placeholder = document.createElement('div');
-        placeholder.className = 'thumb uploading';
-        placeholder.textContent = 'Uploading…';
-        thumbsEl.appendChild(placeholder);
-        try {
-          var url = await uploadFile(files[i]);
-          items.push({ url: url });
+    addBtn.addEventListener('click', function () {
+      mediaPicker.open({
+        multiple: multiple,
+        current: items.map(function (it) { return it.url; }),
+        onSelect: function (urls) {
+          if (!multiple) {
+            items = urls.length ? [{ url: urls[0] }] : [];
+          } else {
+            urls.forEach(function (u) {
+              if (!items.some(function (it) { return it.url === u; })) items.push({ url: u });
+            });
+          }
           render();
-        } catch (err) {
-          toast('Upload failed: ' + err.message, true);
-          placeholder.remove();
-        }
-      }
+        },
+      });
     });
     render();
     return {
@@ -218,7 +299,7 @@
 
   /* ---------- BLOG ---------- */
   var blogRTE = createRTE($('#blog-content-rte'));
-  var blogUploader = createImageUploader($('#blog-images-uploader'), $('#blog-images-input'), $('#blog-images-thumbs'), []);
+  var blogUploader = createImageUploader($('#blog-images-add-btn'), $('#blog-images-thumbs'), [], { multiple: true });
   var blogPosts = [];
 
   $all('input[name="blog-media-type"]').forEach(function (r) {
@@ -341,7 +422,7 @@
 
   /* ---------- PROJECTS ---------- */
   var projectRTE = createRTE($('#project-content-rte'));
-  var projectUploader = createImageUploader($('#project-images-uploader'), $('#project-images-input'), $('#project-images-thumbs'), []);
+  var projectUploader = createImageUploader($('#project-images-add-btn'), $('#project-images-thumbs'), [], { multiple: true });
   var projects = [];
   var tableState = { headers: ['Field', 'Value'], rows: [['Status', 'Ongoing'], ['Location', 'Gujarat, India']] };
 
@@ -583,7 +664,7 @@
   }
 
   /* ---------- AUTHORS (Settings tab) ---------- */
-  var authorUploader = createImageUploader($('#author-image-uploader'), $('#author-image-input'), $('#author-image-thumbs'), []);
+  var authorUploader = createImageUploader($('#author-image-add-btn'), $('#author-image-thumbs'), [], { multiple: false });
   var authors = [];
 
   function renderAuthorsList() {
@@ -674,12 +755,63 @@
     }
   }
 
+  /* ---------- MEDIA LIBRARY TAB ---------- */
+  async function loadMediaTab() {
+    var gridEl = $('#media-tab-grid');
+    gridEl.innerHTML = '<div class="empty-note" style="grid-column:1/-1">Loading…</div>';
+    try {
+      var media = await api('/api/media');
+      if (!media.length) {
+        gridEl.innerHTML = '<div class="empty-note" style="grid-column:1/-1">No images uploaded yet. Click "+ Upload image" to add one.</div>';
+        return;
+      }
+      gridEl.innerHTML = media.map(function (m) {
+        return '<div class="media-item"><img src="' + esc(m.url) + '" loading="lazy"><button type="button" class="rm" data-url="' + esc(m.url) + '">Delete</button></div>';
+      }).join('');
+      $all('.rm', gridEl).forEach(function (b) {
+        b.addEventListener('click', function (e) {
+          e.stopPropagation();
+          deleteMedia(b.dataset.url);
+        });
+      });
+    } catch (err) {
+      gridEl.innerHTML = '<div class="empty-note" style="grid-column:1/-1">' + esc(err.message) + '</div>';
+    }
+  }
+
+  $('#media-tab-upload-btn').addEventListener('click', function () { $('#media-tab-upload-input').click(); });
+  $('#media-tab-upload-input').addEventListener('change', async function () {
+    var input = $('#media-tab-upload-input');
+    var files = Array.prototype.slice.call(input.files);
+    input.value = '';
+    for (var i = 0; i < files.length; i++) {
+      try {
+        await uploadFile(files[i]);
+      } catch (err) {
+        toast('Upload failed: ' + err.message, true);
+      }
+    }
+    loadMediaTab();
+  });
+
+  async function deleteMedia(url) {
+    if (!confirm('Delete this image? Any page currently using it will show a broken image.')) return;
+    try {
+      await api('/api/media?url=' + encodeURIComponent(url), { method: 'DELETE' });
+      toast('Deleted');
+      loadMediaTab();
+    } catch (err) {
+      toast(err.message, true);
+    }
+  }
+
   /* ---------- init ---------- */
   function initAppData() {
     loadBlog().catch(function (e) { toast(e.message, true); });
     loadProjects().catch(function (e) { toast(e.message, true); });
     loadCareers().catch(function (e) { toast(e.message, true); });
     loadAuthors().catch(function (e) { toast(e.message, true); });
+    loadMediaTab().catch(function (e) { toast(e.message, true); });
   }
 
   checkSession();

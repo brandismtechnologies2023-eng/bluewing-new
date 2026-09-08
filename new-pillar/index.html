@@ -32,6 +32,7 @@
       <button class="nav-item" data-tab="projects">Projects</button>
       <button class="nav-item" data-tab="careers">Careers — Current Openings</button>
       <button class="nav-item" data-tab="settings">Settings — Authors</button>
+      <button class="nav-item" data-tab="media">Media Library</button>
     </nav>
     <button id="logout-btn" class="btn btn-ghost logout-btn">Log out</button>
   </aside>
@@ -73,6 +74,17 @@
       </div>
       <p style="color:var(--steel);font-size:12.5px;margin-top:-14px;margin-bottom:20px">Manage the authors shown on blog posts — name, designation and photo. Assign an author to a post from the Blog tab.</p>
       <div class="list" id="authors-list"></div>
+    </section>
+
+    <!-- MEDIA LIBRARY TAB -->
+    <section class="tab-panel" id="tab-media">
+      <div class="panel-head">
+        <h2>Media library</h2>
+        <button class="btn btn-primary" id="media-tab-upload-btn">+ Upload image</button>
+        <input type="file" id="media-tab-upload-input" accept="image/*" multiple hidden>
+      </div>
+      <p style="color:var(--steel);font-size:12.5px;margin-top:-14px;margin-bottom:20px">Every image used across the website lives here. Upload once, then reuse it anywhere via "+ Add image".</p>
+      <div class="media-grid" id="media-tab-grid"></div>
     </section>
 
   </main>
@@ -126,7 +138,7 @@
         <label>Images</label>
         <div class="uploader" id="blog-images-uploader">
           <div class="thumbs" id="blog-images-thumbs"></div>
-          <input type="file" id="blog-images-input" accept="image/*" multiple>
+          <button type="button" class="btn btn-sm" id="blog-images-add-btn">+ Add image</button>
         </div>
       </div>
 
@@ -181,7 +193,7 @@
       <label>Images</label>
       <div class="uploader" id="project-images-uploader">
         <div class="thumbs" id="project-images-thumbs"></div>
-        <input type="file" id="project-images-input" accept="image/*" multiple>
+        <button type="button" class="btn btn-sm" id="project-images-add-btn">+ Add image</button>
       </div>
 
       <div class="table-editor-wrap">
@@ -269,12 +281,34 @@
       <label>Photo</label>
       <div class="uploader" id="author-image-uploader">
         <div class="thumbs" id="author-image-thumbs"></div>
-        <input type="file" id="author-image-input" accept="image/*">
+        <button type="button" class="btn btn-sm" id="author-image-add-btn">+ Add image</button>
       </div>
     </div>
     <div class="modal-foot">
       <button class="btn btn-ghost" data-close="author-modal">Cancel</button>
       <button class="btn btn-primary" id="author-save-btn">Save author</button>
+    </div>
+  </div>
+</div>
+
+<!-- ===== MEDIA PICKER POPUP (Elementor-style) ===== -->
+<div class="modal" id="media-picker-modal" hidden>
+  <div class="modal-box modal-wide">
+    <div class="modal-head">
+      <h3>Select image</h3>
+      <button class="modal-x" data-close="media-picker-modal">&times;</button>
+    </div>
+    <div class="modal-body">
+      <div class="media-picker-toolbar">
+        <button type="button" class="btn btn-primary btn-sm" id="media-picker-upload-btn">+ Upload new image</button>
+        <input type="file" id="media-picker-upload-input" accept="image/*" multiple hidden>
+        <span id="media-picker-hint" style="color:var(--steel);font-size:12px"></span>
+      </div>
+      <div class="media-grid" id="media-picker-grid"></div>
+    </div>
+    <div class="modal-foot">
+      <button class="btn btn-ghost" data-close="media-picker-modal">Cancel</button>
+      <button class="btn btn-primary" id="media-picker-confirm-btn">Use selected</button>
     </div>
   </div>
 </div>

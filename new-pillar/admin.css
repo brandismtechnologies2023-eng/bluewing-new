@@ -106,6 +106,16 @@ label textarea{resize:vertical}
 #project-table-editor td input{border:none;padding:8px 10px;width:100%;min-width:120px;background:transparent}
 #project-table-editor th{background:var(--paper)}
 
+/* media library + picker */
+.media-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(120px,1fr));gap:12px}
+.media-item{position:relative;aspect-ratio:1;border-radius:var(--r);overflow:hidden;cursor:pointer;border:2px solid transparent;background:var(--paper)}
+.media-item img{width:100%;height:100%;object-fit:cover;display:block}
+.media-item.is-selected{border-color:var(--accent)}
+.media-item.is-selected::after{content:"✓";position:absolute;top:6px;right:6px;width:22px;height:22px;border-radius:50%;background:var(--accent);color:#fff;display:grid;place-items:center;font-size:12px;font-weight:700}
+.media-item .rm{position:absolute;bottom:4px;right:4px;background:rgba(0,0,0,.6);color:#fff;border:none;border-radius:var(--r);padding:3px 7px;font-size:11px;cursor:pointer;opacity:0;transition:opacity .15s}
+.media-item:hover .rm{opacity:1}
+.media-picker-toolbar{display:flex;align-items:center;gap:12px;margin-bottom:16px}
+
 .checkbox-row{display:flex;align-items:center;gap:8px;font-weight:600;color:var(--ink)}
 .checkbox-row input{width:auto;margin:0}
 
