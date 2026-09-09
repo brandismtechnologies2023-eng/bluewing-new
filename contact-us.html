@@ -699,10 +699,14 @@ h1,h2,h3,h4{margin:0;font-family:var(--f-display);font-weight:600;letter-spacing
 .form-light .btn{width:100%;justify-content:center;margin-top:8px}
 .form-light .pform__n{color:var(--steel);margin-top:14px;font-size:var(--fs-xs)}
 .form-light .fld .phone-combo{display:flex;align-items:stretch;border:1px solid var(--line);border-radius:var(--r);background:var(--paper);overflow:hidden}
-.form-light .fld .phone-combo select{flex:0 0 96px;width:auto;padding:14px 6px 14px 14px;border:none;border-right:1px solid var(--line);border-radius:0;background:transparent}
+.form-light .fld .phone-combo select{flex:0 0 92px;width:auto;padding:14px 18px 14px 12px;border:none;border-right:1px solid var(--line);border-radius:0;background-color:transparent;font-size:13px;
+  -webkit-appearance:none;-moz-appearance:none;appearance:none;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='9' height='6' viewBox='0 0 9 6'%3E%3Cpath d='M1 1l3.5 3.5L8 1' stroke='%2356687A' stroke-width='1.4' fill='none' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+  background-repeat:no-repeat;background-position:right 6px center;background-size:9px 6px}
 .form-light .fld .phone-combo input{flex:1;min-width:0;border:none;border-radius:0;background:transparent;padding:14px 16px}
 .form-light .fld .phone-combo select:focus,.form-light .fld .phone-combo input:focus{outline:none}
 .form-light .fld .phone-combo:focus-within{border-color:var(--accent)}
+.form-light .fld .phone-combo input:disabled{background:var(--concrete,#f1f3f5);color:var(--steel-2);cursor:not-allowed}
 .fld .field-err{display:none;color:#c8102e;font-size:var(--fs-xs);margin-top:6px}
 .fld.has-err input,.fld.has-err select{border-color:#c8102e}
 .fld.has-err .phone-combo{border-color:#c8102e}
@@ -1431,10 +1435,28 @@ h1,h2,h3,h4{margin:0;font-family:var(--f-display);font-weight:600;letter-spacing
 
   /* ── country-code phone selects ──────────────────────────── */
   var COUNTRIES = window.BW_COUNTRY_CODES || [];
+  var COUNTRY_BY_ISO = {};
+  COUNTRIES.forEach(function (c) { COUNTRY_BY_ISO[c[0]] = c; });
+
   document.querySelectorAll('select[name="phoneCode"]').forEach(function (sel) {
-    sel.innerHTML = COUNTRIES.map(function (c) {
-      return '<option value="' + c[2] + '"' + (c[0] === 'IN' ? ' selected' : '') + '>' + c[0] + ' +' + c[2] + '</option>';
+    sel.innerHTML = '<option value="" selected>Code</option>' + COUNTRIES.map(function (c) {
+      return '<option value="' + c[0] + '" data-dial="' + c[2] + '">' + c[0] + ' +' + c[2] + '</option>';
     }).join('');
+
+    var phoneInput = sel.closest('.phone-combo').querySelector('input[type="tel"]');
+    phoneInput.disabled = true;
+    phoneInput.placeholder = 'Select code first';
+
+    sel.addEventListener('change', function () {
+      if (sel.value) {
+        phoneInput.disabled = false;
+        phoneInput.placeholder = '98765 43210';
+      } else {
+        phoneInput.disabled = true;
+        phoneInput.value = '';
+        phoneInput.placeholder = 'Select code first';
+      }
+    });
   });
 
   /* ── partner / enquiry form → POST /api/enquiry ────────── */
@@ -1458,7 +1480,7 @@ h1,h2,h3,h4{margin:0;font-family:var(--f-display);font-weight:600;letter-spacing
     function validate() {
       clearErrors();
       var firstBad = null;
-      form.querySelectorAll('input[required], select[required]').forEach(function (i) {
+      form.querySelectorAll('input[required]:not([type="tel"]), select[required]:not([name="phoneCode"])').forEach(function (i) {
         if (!i.value.trim()) {
           markError(i);
           if (!firstBad) firstBad = i;
@@ -1470,12 +1492,23 @@ h1,h2,h3,h4{margin:0;font-family:var(--f-display);font-weight:600;letter-spacing
         if (!firstBad) firstBad = emailInput;
       }
       var phoneInput = form.querySelector('input[type="tel"]');
+      var phoneCodeSel = form.querySelector('select[name="phoneCode"]');
       if (phoneInput) {
+        var phoneRequired = phoneInput.hasAttribute('required');
         var digits = phoneInput.value.replace(/\D/g, '');
-        if (phoneInput.hasAttribute('required') || digits) {
-          if (digits.length < 6 || digits.length > 14) {
-            markError(phoneInput, 'Please enter a valid phone number.');
-            if (!firstBad) firstBad = phoneInput;
+        if (phoneRequired || digits) {
+          if (!phoneCodeSel || !phoneCodeSel.value) {
+            markError(phoneInput, 'Please select a country code first.');
+            if (!firstBad) firstBad = phoneCodeSel || phoneInput;
+          } else {
+            var country = COUNTRY_BY_ISO[phoneCodeSel.value];
+            var min = country ? country[3] : 6, max = country ? country[4] : 14;
+            if (digits.length < min || digits.length > max) {
+              markError(phoneInput, min === max
+                ? ('Enter a ' + min + '-digit number for ' + (country ? country[1] : 'this country') + '.')
+                : ('Enter a ' + min + '–' + max + '-digit number for ' + (country ? country[1] : 'this country') + '.'));
+              if (!firstBad) firstBad = phoneInput;
+            }
           }
         }
       }
@@ -1494,8 +1527,9 @@ h1,h2,h3,h4{margin:0;font-family:var(--f-display);font-weight:600;letter-spacing
 
       var data = Object.fromEntries(new FormData(form).entries());
       var phoneCodeSel = form.querySelector('select[name="phoneCode"]');
-      if (phoneCodeSel && data.phone) {
-        data.phone = '+' + phoneCodeSel.value + ' ' + data.phone;
+      if (phoneCodeSel && phoneCodeSel.value && data.phone) {
+        var dial = phoneCodeSel.selectedOptions[0].getAttribute('data-dial');
+        data.phone = '+' + dial + ' ' + data.phone;
       }
       delete data.phoneCode;
       data.formType = form.getAttribute('data-form-type') || 'project-enquiry';
@@ -1523,7 +1557,11 @@ h1,h2,h3,h4{margin:0;font-family:var(--f-display);font-weight:600;letter-spacing
           note.style.color = '#7BE0A8';
           form.reset();
           var ccSel = form.querySelector('select[name="phoneCode"]');
-          if (ccSel) ccSel.value = '91';
+          if (ccSel) {
+            ccSel.value = '';
+            var pi = ccSel.closest('.phone-combo').querySelector('input[type="tel"]');
+            if (pi) { pi.disabled = true; pi.placeholder = 'Select code first'; }
+          }
         }).catch(function () {
           note.textContent = 'Something went wrong sending this — please try again, or email us directly.';
           note.style.color = '#FFB4A8';
