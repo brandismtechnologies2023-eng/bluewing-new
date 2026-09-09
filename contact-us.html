@@ -1474,7 +1474,14 @@ h1,h2,h3,h4{margin:0;font-family:var(--f-display);font-weight:600;letter-spacing
 
     function checkEmail() {
       if (!emailInput) return true;
-      if (!emailInput.value.trim()) { clearError(emailInput); return true; }
+      if (!emailInput.value.trim()) {
+        if (emailInput.hasAttribute('required')) {
+          markError(emailInput, 'Please enter your email address.');
+          return false;
+        }
+        clearError(emailInput);
+        return true;
+      }
       if (!EMAIL_RE.test(emailInput.value.trim())) {
         markError(emailInput, 'Please enter a valid email address, e.g. name@company.com');
         return false;
@@ -1487,8 +1494,12 @@ h1,h2,h3,h4{margin:0;font-family:var(--f-display);font-weight:600;letter-spacing
       if (!phoneInput) return true;
       var digits = phoneInput.value.replace(/\D/g, '');
       if (!digits) {
+        if (phoneInput.hasAttribute('required')) {
+          markError(phoneInput, 'Please enter your phone number.');
+          return false;
+        }
         clearError(phoneInput);
-        return !phoneInput.hasAttribute('required');
+        return true;
       }
       var country = COUNTRY_BY_ISO[sel.value];
       var min = country ? country[3] : 6, max = country ? country[4] : 14;
