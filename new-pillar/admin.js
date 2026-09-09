@@ -869,11 +869,12 @@
   var FIELD_LABELS = {
     name: 'Name', company: 'Company', email: 'Email', phone: 'Phone', interest: 'Interest',
     category: 'Category of supply', city: 'City / state', gst: 'GST number',
-    years: 'Years in business', website: 'Website / catalogue',
+    years: 'Years in business', website: 'Website / catalogue', applyFor: 'Apply for', resumeUrl: 'Resume',
   };
   var FIELD_ORDER = {
     'project-enquiry': ['name', 'company', 'email', 'phone', 'interest'],
     'vendor-registration': ['company', 'name', 'email', 'phone', 'category', 'city', 'gst', 'years', 'website'],
+    'job-application': ['name', 'email', 'phone', 'company', 'applyFor', 'resumeUrl'],
   };
 
   $all('.subtab-item').forEach(function (btn) {
@@ -895,7 +896,10 @@
       var f = e.fields || {};
       var when = e.submittedAt ? new Date(e.submittedAt).toLocaleString() : '';
       var grid = order.filter(function (k) { return f[k]; }).map(function (k) {
-        return '<div><b>' + esc(FIELD_LABELS[k] || k) + '</b>' + esc(f[k]) + '</div>';
+        var value = k === 'resumeUrl'
+          ? '<a href="' + esc(f[k]) + '" target="_blank" rel="noopener">Download resume</a>'
+          : esc(f[k]);
+        return '<div><b>' + esc(FIELD_LABELS[k] || k) + '</b>' + value + '</div>';
       }).join('');
       return '<div class="enquiry-card">' +
         '<div class="eq-head"><h4>' + esc(f.name || f.company || 'Submission') + '</h4>' +
@@ -910,7 +914,7 @@
     });
   }
 
-  var enquiryData = { 'project-enquiry': [], 'vendor-registration': [] };
+  var enquiryData = { 'project-enquiry': [], 'vendor-registration': [], 'job-application': [] };
 
   async function loadEnquiries() {
     try {
@@ -926,6 +930,13 @@
       renderEnquiries($('#enquiries-vendor-list'), vendorEntries, 'vendor-registration');
     } catch (err) {
       $('#enquiries-vendor-list').innerHTML = '<div class="empty-note">' + esc(err.message) + '</div>';
+    }
+    try {
+      var jobEntries = await api('/api/submissions?type=job-application');
+      enquiryData['job-application'] = jobEntries;
+      renderEnquiries($('#enquiries-job-list'), jobEntries, 'job-application');
+    } catch (err) {
+      $('#enquiries-job-list').innerHTML = '<div class="empty-note">' + esc(err.message) + '</div>';
     }
   }
 
