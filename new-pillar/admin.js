@@ -122,11 +122,24 @@
     m.addEventListener('click', function (e) { if (e.target === m) m.hidden = true; });
   });
 
-  /* ---------- rich text editor (Quill, WordPress-style) ---------- */
+  /* ---------- rich text editor (Quill, WordPress-style, with a Visual/Text toggle) ---------- */
   function createRTE(container) {
     container.innerHTML = '';
+
+    var modeBar = document.createElement('div');
+    modeBar.className = 'rte-modebar';
+    modeBar.innerHTML = '<button type="button" class="rte-mode-btn is-active" data-mode="visual">Visual</button>' +
+      '<button type="button" class="rte-mode-btn" data-mode="text">Text (HTML)</button>';
+    container.appendChild(modeBar);
+
     var editorHost = document.createElement('div');
     container.appendChild(editorHost);
+
+    var codeArea = document.createElement('textarea');
+    codeArea.className = 'rte-code';
+    codeArea.hidden = true;
+    codeArea.spellcheck = false;
+    container.appendChild(codeArea);
 
     var quill = new Quill(editorHost, {
       theme: 'snow',
@@ -158,13 +171,36 @@
       },
     });
 
+    var mode = 'visual';
+    modeBar.querySelectorAll('.rte-mode-btn').forEach(function (btn) {
+      btn.addEventListener('click', function () {
+        if (btn.dataset.mode === mode) return;
+        if (btn.dataset.mode === 'text') {
+          codeArea.value = quill.root.innerHTML.trim();
+          editorHost.hidden = true;
+          codeArea.hidden = false;
+          mode = 'text';
+        } else {
+          quill.root.innerHTML = codeArea.value.trim() || '<p><br></p>';
+          codeArea.hidden = true;
+          editorHost.hidden = false;
+          mode = 'visual';
+        }
+        modeBar.querySelectorAll('.rte-mode-btn').forEach(function (b) { b.classList.toggle('is-active', b === btn); });
+      });
+    });
+
     return {
       getHTML: function () {
-        var html = quill.root.innerHTML.trim();
+        var html = (mode === 'text' ? codeArea.value : quill.root.innerHTML).trim();
         return html === '<p><br></p>' ? '' : html;
       },
       setHTML: function (html) {
         quill.root.innerHTML = html && html.trim() ? html : '<p><br></p>';
+        codeArea.value = html || '';
+        if (mode === 'text') { codeArea.hidden = true; editorHost.hidden = false; mode = 'visual';
+          modeBar.querySelectorAll('.rte-mode-btn').forEach(function (b) { b.classList.toggle('is-active', b.dataset.mode === 'visual'); });
+        }
       },
     };
   }
