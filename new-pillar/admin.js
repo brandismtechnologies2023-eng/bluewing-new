@@ -122,75 +122,49 @@
     m.addEventListener('click', function (e) { if (e.target === m) m.hidden = true; });
   });
 
-  /* ---------- rich text editor ---------- */
-  var TOOLBAR = [
-    { cmd: 'bold', label: '<b>B</b>' },
-    { cmd: 'italic', label: '<i>I</i>' },
-    { cmd: 'underline', label: '<u>U</u>' },
-    { cmd: 'insertUnorderedList', label: '&#8226; List' },
-    { cmd: 'insertOrderedList', label: '1. List' },
-    { cmd: 'formatBlock:H3', label: 'H3' },
-    { cmd: 'formatBlock:P', label: 'P' },
-    { cmd: 'createLink', label: 'Link' },
-    { cmd: 'removeFormat', label: 'Clear' },
-  ];
-
+  /* ---------- rich text editor (Quill, WordPress-style) ---------- */
   function createRTE(container) {
     container.innerHTML = '';
-    var toolbar = document.createElement('div');
-    toolbar.className = 'rte-toolbar';
-    var editable = document.createElement('div');
-    editable.className = 'rte-editable';
-    editable.contentEditable = 'true';
-    editable.setAttribute('data-placeholder', 'Write content here…');
+    var editorHost = document.createElement('div');
+    container.appendChild(editorHost);
 
-    TOOLBAR.forEach(function (t) {
-      var b = document.createElement('button');
-      b.type = 'button';
-      b.innerHTML = t.label;
-      b.addEventListener('mousedown', function (e) {
-        e.preventDefault();
-        editable.focus();
-        if (t.cmd === 'createLink') {
-          var url = prompt('Link URL:', 'https://');
-          if (url) document.execCommand('createLink', false, url);
-        } else if (t.cmd.indexOf('formatBlock:') === 0) {
-          document.execCommand('formatBlock', false, t.cmd.split(':')[1]);
-        } else {
-          document.execCommand(t.cmd, false, null);
-        }
-      });
-      toolbar.appendChild(b);
-    });
-
-    container.appendChild(toolbar);
-    container.appendChild(editable);
-
-    function refreshEmptyState() {
-      var isEmpty = editable.textContent.replace(/​/g, '').trim() === '';
-      editable.classList.toggle('is-empty', isEmpty);
-    }
-    editable.addEventListener('input', refreshEmptyState);
-    editable.addEventListener('focus', function () {
-      // Empty contenteditable elements can fail to accept a caret on the
-      // first click in some browsers; a lone <br> gives it something to attach to.
-      if (editable.classList.contains('is-empty') && !editable.querySelector('br')) {
-        editable.innerHTML = '<p><br></p>';
-      }
+    var quill = new Quill(editorHost, {
+      theme: 'snow',
+      placeholder: 'Write content here…',
+      modules: {
+        toolbar: {
+          container: [
+            [{ header: [2, 3, false] }],
+            ['bold', 'italic', 'underline', 'strike'],
+            [{ list: 'ordered' }, { list: 'bullet' }],
+            ['blockquote', 'link', 'image'],
+            ['clean'],
+          ],
+          handlers: {
+            image: function () {
+              var range = quill.getSelection(true);
+              mediaPicker.open({
+                multiple: false,
+                onSelect: function (urls) {
+                  if (urls[0]) {
+                    quill.insertEmbed(range.index, 'image', urls[0], 'user');
+                    quill.setSelection(range.index + 1);
+                  }
+                },
+              });
+            },
+          },
+        },
+      },
     });
 
     return {
       getHTML: function () {
-        return editable.classList.contains('is-empty') ? '' : editable.innerHTML.trim();
+        var html = quill.root.innerHTML.trim();
+        return html === '<p><br></p>' ? '' : html;
       },
       setHTML: function (html) {
-        if (html && html.trim()) {
-          editable.innerHTML = html;
-          editable.classList.remove('is-empty');
-        } else {
-          editable.innerHTML = '<p><br></p>';
-          editable.classList.add('is-empty');
-        }
+        quill.root.innerHTML = html && html.trim() ? html : '<p><br></p>';
       },
     };
   }
@@ -875,20 +849,76 @@
     });
   }
 
+  var enquiryData = { 'project-enquiry': [], 'vendor-registration': [] };
+
   async function loadEnquiries() {
     try {
       var projectEntries = await api('/api/submissions?type=project-enquiry');
+      enquiryData['project-enquiry'] = projectEntries;
       renderEnquiries($('#enquiries-project-list'), projectEntries, 'project-enquiry');
     } catch (err) {
       $('#enquiries-project-list').innerHTML = '<div class="empty-note">' + esc(err.message) + '</div>';
     }
     try {
       var vendorEntries = await api('/api/submissions?type=vendor-registration');
+      enquiryData['vendor-registration'] = vendorEntries;
       renderEnquiries($('#enquiries-vendor-list'), vendorEntries, 'vendor-registration');
     } catch (err) {
       $('#enquiries-vendor-list').innerHTML = '<div class="empty-note">' + esc(err.message) + '</div>';
     }
   }
+
+  function exportRows(formType) {
+    var entries = enquiryData[formType] || [];
+    var order = FIELD_ORDER[formType];
+    var headers = ['Submitted At'].concat(order.map(function (k) { return FIELD_LABELS[k] || k; })).concat(['Message']);
+    var rows = entries.map(function (e) {
+      var f = e.fields || {};
+      var when = e.submittedAt ? new Date(e.submittedAt).toLocaleString() : '';
+      return [when].concat(order.map(function (k) { return f[k] || ''; })).concat([f.message || '']);
+    });
+    return { headers: headers, rows: rows };
+  }
+
+  function exportCSV(formType) {
+    var data = exportRows(formType);
+    var esc2 = function (v) { return '"' + String(v).replace(/"/g, '""') + '"'; };
+    var csv = [data.headers.map(esc2).join(',')].concat(
+      data.rows.map(function (r) { return r.map(esc2).join(','); })
+    ).join('\r\n');
+    var blob = new Blob(['﻿' + csv], { type: 'text/csv;charset=utf-8;' });
+    var url = URL.createObjectURL(blob);
+    var a = document.createElement('a');
+    a.href = url;
+    a.download = formType + '-' + new Date().toISOString().slice(0, 10) + '.csv';
+    document.body.appendChild(a);
+    a.click();
+    a.remove();
+    URL.revokeObjectURL(url);
+  }
+
+  function exportPDF(formType) {
+    if (!window.jspdf) { toast('PDF library failed to load', true); return; }
+    var data = exportRows(formType);
+    var doc = new window.jspdf.jsPDF({ orientation: 'landscape' });
+    doc.setFontSize(14);
+    doc.text(formType === 'vendor-registration' ? 'Vendor Registrations' : 'Project Enquiries', 14, 14);
+    doc.autoTable({
+      head: [data.headers],
+      body: data.rows,
+      startY: 20,
+      styles: { fontSize: 8, cellPadding: 3 },
+      headStyles: { fillColor: [52, 68, 111] },
+    });
+    doc.save(formType + '-' + new Date().toISOString().slice(0, 10) + '.pdf');
+  }
+
+  $all('[data-export-csv]').forEach(function (b) {
+    b.addEventListener('click', function () { exportCSV(b.dataset.exportCsv); });
+  });
+  $all('[data-export-pdf]').forEach(function (b) {
+    b.addEventListener('click', function () { exportPDF(b.dataset.exportPdf); });
+  });
 
   async function deleteEnquiry(type, id) {
     if (!confirm('Delete this submission? This cannot be undone.')) return;

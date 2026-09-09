@@ -1433,40 +1433,21 @@ h1,h2,h3,h4{margin:0;font-family:var(--f-display);font-weight:600;letter-spacing
     });
   }
 
-  /* ── country-code phone selects ──────────────────────────── */
+  /* ── country-code phone selects + validation ─────────────── */
   var COUNTRIES = window.BW_COUNTRY_CODES || [];
   var COUNTRY_BY_ISO = {};
   COUNTRIES.forEach(function (c) { COUNTRY_BY_ISO[c[0]] = c; });
-
-  document.querySelectorAll('select[name="phoneCode"]').forEach(function (sel) {
-    sel.innerHTML = '<option value="" selected>Code</option>' + COUNTRIES.map(function (c) {
-      return '<option value="' + c[0] + '" data-dial="' + c[2] + '">' + c[0] + ' +' + c[2] + '</option>';
-    }).join('');
-
-    var phoneInput = sel.closest('.phone-combo').querySelector('input[type="tel"]');
-    phoneInput.disabled = true;
-    phoneInput.placeholder = 'Select code first';
-
-    sel.addEventListener('change', function () {
-      if (sel.value) {
-        phoneInput.disabled = false;
-        phoneInput.placeholder = '98765 43210';
-      } else {
-        phoneInput.disabled = true;
-        phoneInput.value = '';
-        phoneInput.placeholder = 'Select code first';
-      }
-    });
-  });
-
-  /* ── partner / enquiry form → POST /api/enquiry ────────── */
   var EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
   document.querySelectorAll('form[data-enquiry]').forEach(function (form) {
     var note = form.querySelector('[data-note]');
-    var noteDefault = note.textContent;
 
     function clearErrors() {
       form.querySelectorAll('.fld.has-err').forEach(function (f) { f.classList.remove('has-err'); });
+    }
+    function clearError(input) {
+      var fld = input.closest('.fld');
+      if (fld) fld.classList.remove('has-err');
     }
     function markError(input, msg) {
       var fld = input.closest('.fld');
@@ -1477,41 +1458,87 @@ h1,h2,h3,h4{margin:0;font-family:var(--f-display);font-weight:600;letter-spacing
         if (errEl) errEl.textContent = msg;
       }
     }
+
+    var sel = form.querySelector('select[name="phoneCode"]');
+    var phoneInput = form.querySelector('input[type="tel"]');
+    var emailInput = form.querySelector('input[type="email"]');
+    var applyCountry = function () {};
+
+    function checkEmail() {
+      if (!emailInput) return true;
+      if (!emailInput.value.trim()) { clearError(emailInput); return true; }
+      if (!EMAIL_RE.test(emailInput.value.trim())) {
+        markError(emailInput, 'Please enter a valid email address, e.g. name@company.com');
+        return false;
+      }
+      clearError(emailInput);
+      return true;
+    }
+
+    function checkPhone() {
+      if (!phoneInput) return true;
+      var digits = phoneInput.value.replace(/\D/g, '');
+      if (!digits) {
+        clearError(phoneInput);
+        return !phoneInput.hasAttribute('required');
+      }
+      var country = COUNTRY_BY_ISO[sel.value];
+      var min = country ? country[3] : 6, max = country ? country[4] : 14;
+      if (digits.length < min || digits.length > max) {
+        markError(phoneInput, min === max
+          ? ('Enter a ' + min + '-digit number for ' + (country ? country[1] : 'this country') + '.')
+          : ('Enter a ' + min + '–' + max + '-digit number for ' + (country ? country[1] : 'this country') + '.'));
+        return false;
+      }
+      clearError(phoneInput);
+      return true;
+    }
+
+    if (sel && phoneInput) {
+      sel.innerHTML = COUNTRIES.map(function (c) {
+        return '<option value="' + c[0] + '" data-dial="' + c[2] + '"' + (c[0] === 'IN' ? ' selected' : '') + '>' + c[0] + ' +' + c[2] + '</option>';
+      }).join('');
+
+      applyCountry = function () {
+        var country = COUNTRY_BY_ISO[sel.value];
+        if (sel.value && country) {
+          phoneInput.disabled = false;
+          phoneInput.placeholder = '98765 43210';
+          phoneInput.setAttribute('maxlength', String(country[4]));
+        } else {
+          phoneInput.disabled = true;
+          phoneInput.value = '';
+          phoneInput.placeholder = 'Select code first';
+          phoneInput.removeAttribute('maxlength');
+        }
+      }
+      applyCountry();
+      sel.addEventListener('change', function () { applyCountry(); checkPhone(); });
+
+      phoneInput.addEventListener('keypress', function (e) {
+        if (e.key.length === 1 && !/[0-9]/.test(e.key)) e.preventDefault();
+      });
+      phoneInput.addEventListener('input', function () {
+        var digitsOnly = phoneInput.value.replace(/\D/g, '');
+        var country = COUNTRY_BY_ISO[sel.value];
+        var max = country ? country[4] : 15;
+        phoneInput.value = digitsOnly.slice(0, max);
+      });
+      phoneInput.addEventListener('blur', checkPhone);
+    }
+    if (emailInput) emailInput.addEventListener('blur', checkEmail);
+
     function validate() {
       clearErrors();
       var firstBad = null;
-      form.querySelectorAll('input[required]:not([type="tel"]), select[required]:not([name="phoneCode"])').forEach(function (i) {
+      form.querySelectorAll('input[required]:not([type="tel"]):not([type="email"]), select[required]:not([name="phoneCode"])').forEach(function (i) {
         if (!i.value.trim()) {
           markError(i);
           if (!firstBad) firstBad = i;
         }
       });
-      var emailInput = form.querySelector('input[type="email"]');
-      if (emailInput && emailInput.value.trim() && !EMAIL_RE.test(emailInput.value.trim())) {
-        markError(emailInput, 'Please enter a valid email address, e.g. name@company.com');
-        if (!firstBad) firstBad = emailInput;
-      }
-      var phoneInput = form.querySelector('input[type="tel"]');
-      var phoneCodeSel = form.querySelector('select[name="phoneCode"]');
-      if (phoneInput) {
-        var phoneRequired = phoneInput.hasAttribute('required');
-        var digits = phoneInput.value.replace(/\D/g, '');
-        if (phoneRequired || digits) {
-          if (!phoneCodeSel || !phoneCodeSel.value) {
-            markError(phoneInput, 'Please select a country code first.');
-            if (!firstBad) firstBad = phoneCodeSel || phoneInput;
-          } else {
-            var country = COUNTRY_BY_ISO[phoneCodeSel.value];
-            var min = country ? country[3] : 6, max = country ? country[4] : 14;
-            if (digits.length < min || digits.length > max) {
-              markError(phoneInput, min === max
-                ? ('Enter a ' + min + '-digit number for ' + (country ? country[1] : 'this country') + '.')
-                : ('Enter a ' + min + '–' + max + '-digit number for ' + (country ? country[1] : 'this country') + '.'));
-              if (!firstBad) firstBad = phoneInput;
-            }
-          }
-        }
-      }
+      if (!checkEmail() && !firstBad) firstBad = emailInput;
+      if (!checkPhone() && !firstBad) firstBad = phoneInput;
       return firstBad;
     }
 
@@ -1556,12 +1583,8 @@ h1,h2,h3,h4{margin:0;font-family:var(--f-display);font-weight:600;letter-spacing
             : 'Thank you — an engineer from our team will respond within two working days.';
           note.style.color = '#7BE0A8';
           form.reset();
-          var ccSel = form.querySelector('select[name="phoneCode"]');
-          if (ccSel) {
-            ccSel.value = '';
-            var pi = ccSel.closest('.phone-combo').querySelector('input[type="tel"]');
-            if (pi) { pi.disabled = true; pi.placeholder = 'Select code first'; }
-          }
+          applyCountry();
+          clearErrors();
         }).catch(function () {
           note.textContent = 'Something went wrong sending this — please try again, or email us directly.';
           note.style.color = '#FFB4A8';

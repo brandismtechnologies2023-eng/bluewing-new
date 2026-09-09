@@ -74,14 +74,12 @@ label textarea{resize:vertical}
 .modal-foot{padding:16px 22px;border-top:1px solid var(--line);display:flex;justify-content:flex-end;gap:10px}
 
 /* rich text editor */
-.rte{border:1px solid var(--line-dk);border-radius:var(--r);overflow:hidden;margin-top:6px}
-.rte-toolbar{display:flex;flex-wrap:wrap;gap:2px;background:var(--paper);padding:6px;border-bottom:1px solid var(--line-dk)}
-.rte-toolbar button{border:1px solid transparent;background:transparent;padding:6px 9px;border-radius:var(--r);cursor:pointer;font-weight:700;font-size:13px;color:var(--ink)}
-.rte-toolbar button:hover{background:#fff;border-color:var(--line-dk)}
-.rte-editable{min-height:160px;padding:12px 14px;outline:none;line-height:1.55}
-.rte-editable p{margin:0 0 10px}
-.rte-editable.is-empty{position:relative}
-.rte-editable.is-empty:before{content:attr(data-placeholder);color:#9aa3ad;position:absolute;pointer-events:none}
+.rte{border:1px solid var(--line-dk);border-radius:var(--r);overflow:hidden;margin-top:6px;font-family:inherit}
+.rte .ql-toolbar.ql-snow{border:none;border-bottom:1px solid var(--line-dk);background:var(--paper);font-family:inherit}
+.rte .ql-container.ql-snow{border:none;font-family:inherit;font-size:14px}
+.rte .ql-editor{min-height:160px;line-height:1.55}
+.rte .ql-editor img{max-width:280px;max-height:220px;width:auto;height:auto;object-fit:cover;border-radius:var(--r);cursor:pointer}
+.rte .ql-editor.ql-blank::before{color:#9aa3ad;font-style:normal}
 
 /* media type */
 .media-type-fs{border:1px solid var(--line);border-radius:var(--r);padding:12px 14px;margin-bottom:14px}
@@ -109,6 +107,7 @@ label textarea{resize:vertical}
 
 /* sub-tabs (Enquiries) */
 .subtabs{display:flex;gap:8px;margin-bottom:20px;border-bottom:1px solid var(--line)}
+.export-row{display:flex;gap:8px;margin-bottom:16px}
 .subtab-item{background:none;border:none;border-bottom:2px solid transparent;padding:10px 4px;margin-bottom:-1px;cursor:pointer;font-weight:600;font-size:13px;color:var(--steel)}
 .subtab-item.is-active{color:var(--accent);border-color:var(--accent)}
 .subtab-panel{display:none}

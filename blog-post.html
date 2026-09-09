@@ -669,6 +669,11 @@ h1,h2,h3,h4{margin:0;font-family:var(--f-display);font-weight:600;letter-spacing
 .rt__body li{position:relative;padding-left:26px;margin-bottom:11px;color:var(--steel);font-size:var(--fs-sm)}
 .rt__body li::before{content:"";position:absolute;left:0;top:11px;width:11px;height:1px;background:var(--accent)}
 .rt__body strong{color:var(--ink)}
+.rt__body img{max-width:280px;max-height:220px;width:auto;height:auto;object-fit:cover;border-radius:var(--r);cursor:zoom-in;display:block;margin:16px 0}
+.bw-lightbox{position:fixed;inset:0;background:rgba(6,21,35,.92);display:none;align-items:center;justify-content:center;z-index:999;padding:30px;cursor:zoom-out}
+.bw-lightbox.is-open{display:flex}
+.bw-lightbox img{max-width:90vw;max-height:90vh;border-radius:var(--r);object-fit:contain}
+.bw-lightbox .bw-lightbox-close{position:absolute;top:20px;right:24px;color:#fff;font-size:32px;line-height:1;background:none;border:none;cursor:pointer}
 @media(max-width:900px){.rt__in{grid-template-columns:1fr}.rt__side{position:static}}
 
 /* ── Contact ───────────────────────────────────────────── */
@@ -1479,6 +1484,21 @@ h1,h2,h3,h4{margin:0;font-family:var(--f-display);font-weight:600;letter-spacing
     document.getElementById('bp-title').textContent = 'Article not found';
     document.getElementById('bp-lead').textContent = 'This article may have been removed or the link is incorrect.';
   });
+})();
+</script>
+<div class="bw-lightbox" id="bw-lightbox"><button class="bw-lightbox-close" aria-label="Close">&times;</button><img id="bw-lightbox-img" src="" alt=""></div>
+<script>
+(function(){
+  var box = document.getElementById('bw-lightbox');
+  var boxImg = document.getElementById('bw-lightbox-img');
+  function openBox(src, alt){ boxImg.src = src; boxImg.alt = alt || ''; box.classList.add('is-open'); }
+  function closeBox(){ box.classList.remove('is-open'); boxImg.src = ''; }
+  document.addEventListener('click', function(e){
+    var img = e.target.closest('#bp-content img');
+    if (img) { openBox(img.src, img.alt); return; }
+    if (e.target === box || e.target.closest('.bw-lightbox-close')) closeBox();
+  });
+  document.addEventListener('keydown', function(e){ if (e.key === 'Escape') closeBox(); });
 })();
 </script>
 </body>

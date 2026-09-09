@@ -6,6 +6,10 @@
 <meta name="robots" content="noindex, nofollow">
 <title>BlueWing Admin</title>
 <link rel="stylesheet" href="/new-pillar/admin.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/quill/1.3.7/quill.snow.min.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/quill/1.3.7/quill.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.8.2/jspdf.plugin.autotable.min.js"></script>
 </head>
 <body>
 
@@ -98,9 +102,17 @@
         <button class="subtab-item" data-subtab="vendor-registration">Vendor registration</button>
       </div>
       <div class="subtab-panel is-active" id="subtab-project-enquiry">
+        <div class="export-row">
+          <button class="btn btn-sm" data-export-csv="project-enquiry">Export Excel (CSV)</button>
+          <button class="btn btn-sm" data-export-pdf="project-enquiry">Export PDF</button>
+        </div>
         <div class="list" id="enquiries-project-list"></div>
       </div>
       <div class="subtab-panel" id="subtab-vendor-registration">
+        <div class="export-row">
+          <button class="btn btn-sm" data-export-csv="vendor-registration">Export Excel (CSV)</button>
+          <button class="btn btn-sm" data-export-pdf="vendor-registration">Export PDF</button>
+        </div>
         <div class="list" id="enquiries-vendor-list"></div>
       </div>
     </section>
