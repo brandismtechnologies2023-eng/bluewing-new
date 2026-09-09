@@ -8,7 +8,7 @@ const ALLOWED_RESUME_EXT = /\.(pdf|docx?)$/i;
 const REQUIRED_FIELDS = {
   'project-enquiry': ['name', 'email', 'interest'],
   'vendor-registration': ['company', 'name', 'email', 'phone', 'category', 'city'],
-  'job-application': ['name', 'email', 'phone', 'applyFor'],
+  'job-application': ['name', 'email', 'phone', 'company', 'applyFor'],
 };
 
 const LABELS = {
