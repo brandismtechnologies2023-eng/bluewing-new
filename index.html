@@ -1344,9 +1344,19 @@ h1,h2,h3,h4{margin:0;font-family:var(--f-display);font-weight:600;letter-spacing
   /* ── sticky header → useScrollState() ─────────────────── */
   var hdr = document.getElementById('hdr');
   if (hdr) {
-    var onScroll = function () { hdr.classList.toggle('stuck', scrollY > 12); };
+    var hdrTicking = false;
+    var applyStuck = function () {
+      hdrTicking = false;
+      // Hysteresis: separate on/off thresholds stop the class (and its height
+      // transition) from flip-flopping when the user hovers around one value.
+      if (scrollY > 40) hdr.classList.add('stuck');
+      else if (scrollY < 10) hdr.classList.remove('stuck');
+    };
+    var onScroll = function () {
+      if (!hdrTicking) { requestAnimationFrame(applyStuck); hdrTicking = true; }
+    };
     addEventListener('scroll', onScroll, { passive: true });
-    onScroll();
+    applyStuck();
   }
 
   /* ── mobile drawer → <MobileDrawer /> ─────────────────── */

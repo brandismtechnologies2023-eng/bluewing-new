@@ -1117,6 +1117,7 @@ h1,h2,h3,h4{margin:0;font-family:var(--f-display);font-weight:600;letter-spacing
   }
   function render(items) {
     var published = items.filter(function(p){ return p.published !== false; });
+    grid.style.opacity = '0';
     grid.innerHTML = published.map(function(p){
       var img = p.images && p.images[0] ? p.images[0].url : '';
       var statusClass = p.status === 'Ongoing' ? ' pj__st--on' : '';
@@ -1126,23 +1127,35 @@ h1,h2,h3,h4{margin:0;font-family:var(--f-display);font-weight:600;letter-spacing
         (img ? '<img decoding="async" src="' + esc(img) + '" alt="' + esc(p.title) + ' — a BlueWing Group project" loading="lazy" width="640" height="480">' : '') +
         '</div><div class="pj__b"><h3>' + esc(p.title) + '</h3><svg><use href="#i-arr"/></svg></div></a>';
     }).join('');
+    requestAnimationFrame(function(){
+      grid.style.transition = 'opacity .35s ease';
+      grid.style.opacity = '1';
+    });
   }
   function load(attempt) {
-    fetch('/api/projects').then(function(r){
+    if (attempt === 0) {
+      grid.innerHTML = '<p style="grid-column:1/-1;color:var(--steel)">Loading projects…</p>';
+    }
+    fetch('/api/projects', { cache: 'no-store' }).then(function(r){
       if (!r.ok) throw new Error('bad status');
       return r.json();
     }).then(function(items){
       if (!Array.isArray(items) || !items.length) throw new Error('empty');
       render(items);
     }).catch(function(){
-      if (attempt < 2) {
-        setTimeout(function(){ load(attempt + 1); }, 1200);
+      if (attempt < 3) {
+        setTimeout(function(){ load(attempt + 1); }, 1000);
       } else {
         grid.innerHTML = '<p style="grid-column:1/-1;color:var(--steel)">Projects could not be loaded right now — please refresh the page.</p>';
       }
     });
   }
   load(0);
+  // If the browser restores this page from back/forward cache, force a
+  // fresh reload of the list instead of trusting whatever was frozen in it.
+  addEventListener('pageshow', function (e) {
+    if (e.persisted) load(0);
+  });
 })();
 </script>
 </div>
@@ -1223,9 +1236,17 @@ h1,h2,h3,h4{margin:0;font-family:var(--f-display);font-weight:600;letter-spacing
   /* ── sticky header → useScrollState() ─────────────────── */
   var hdr = document.getElementById('hdr');
   if (hdr) {
-    var onScroll = function () { hdr.classList.toggle('stuck', scrollY > 12); };
+    var hdrTicking = false;
+    var applyStuck = function () {
+      hdrTicking = false;
+      if (scrollY > 40) hdr.classList.add('stuck');
+      else if (scrollY < 10) hdr.classList.remove('stuck');
+    };
+    var onScroll = function () {
+      if (!hdrTicking) { requestAnimationFrame(applyStuck); hdrTicking = true; }
+    };
     addEventListener('scroll', onScroll, { passive: true });
-    onScroll();
+    applyStuck();
   }
 
   /* ── mobile drawer → <MobileDrawer /> ─────────────────── */
