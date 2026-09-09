@@ -310,20 +310,29 @@
   function createImageUploader(addBtn, thumbsEl, initial, opts) {
     opts = opts || {};
     var multiple = opts.multiple !== false;
+    var featurable = !!opts.featurable;
     var items = (initial || []).slice(); // [{url}]
 
     function render() {
       thumbsEl.innerHTML = '';
       items.forEach(function (item, i) {
         var d = document.createElement('div');
-        d.className = 'thumb';
-        d.innerHTML = '<img src="' + esc(item.url) + '"><button type="button" class="rm" data-i="' + i + '">&times;</button>';
+        d.className = 'thumb' + (featurable && i === 0 ? ' is-featured' : '');
+        d.innerHTML = '<img src="' + esc(item.url) + '">' +
+          (featurable && i === 0 ? '<span class="thumb-badge">Featured</span>' : '') +
+          (featurable && i !== 0 ? '<button type="button" class="thumb-star" data-star="' + i + '" title="Set as featured image">&#9733;</button>' : '') +
+          '<button type="button" class="rm" data-i="' + i + '">&times;</button>';
         thumbsEl.appendChild(d);
       });
     }
     thumbsEl.addEventListener('click', function (e) {
       if (e.target.classList.contains('rm')) {
         items.splice(parseInt(e.target.dataset.i, 10), 1);
+        render();
+      } else if (e.target.classList.contains('thumb-star')) {
+        var idx = parseInt(e.target.dataset.star, 10);
+        var picked = items.splice(idx, 1)[0];
+        items.unshift(picked);
         render();
       }
     });
@@ -511,8 +520,7 @@
   /* ---------- PROJECTS ---------- */
   var projectRTE = null;
   function getProjectRTE() { if (!projectRTE) projectRTE = createRTE($('#project-content-rte')); return projectRTE; }
-  var projectFeaturedUploader = createImageUploader($('#project-featured-add-btn'), $('#project-featured-thumbs'), [], { multiple: false });
-  var projectUploader = createImageUploader($('#project-images-add-btn'), $('#project-images-thumbs'), [], { multiple: true });
+  var projectUploader = createImageUploader($('#project-images-add-btn'), $('#project-images-thumbs'), [], { multiple: true, featurable: true });
   var projects = [];
   var tableState = { headers: ['Field', 'Value'], rows: [['Status', 'Ongoing'], ['Location', 'Gujarat, India']] };
 
@@ -604,9 +612,7 @@
     $('#project-tags').value = p && p.tags ? p.tags.join(', ') : '';
     $('#project-photo-caption').value = p ? (p.photoCaption || '') : '';
     $('#project-photo-credit').value = p ? (p.photoCredit || '') : '';
-    var allImages = p ? (p.images || []) : [];
-    projectFeaturedUploader.setItems(allImages[0] ? [allImages[0]] : []);
-    projectUploader.setItems(allImages.slice(1));
+    projectUploader.setItems(p ? (p.images || []) : []);
     tableState = p && p.table && p.table.headers && p.table.headers.length
       ? { headers: p.table.headers.slice(), rows: p.table.rows.map(function (r) { return r.slice(); }) }
       : { headers: ['Field', 'Value'], rows: [['Status', 'Ongoing'], ['Location', 'Gujarat, India']] };
@@ -627,7 +633,7 @@
       category: $('#project-category').value.trim(),
       tags: $('#project-tags').value.split(',').map(function (s) { return s.trim(); }).filter(Boolean),
       content: getProjectRTE().getHTML(),
-      images: projectFeaturedUploader.getItems().concat(projectUploader.getItems()),
+      images: projectUploader.getItems(),
       photoCaption: $('#project-photo-caption').value.trim(),
       photoCredit: $('#project-photo-credit').value.trim(),
       table: tableState,
