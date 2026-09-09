@@ -197,16 +197,29 @@
       });
     });
 
+    function setActiveMode(newMode) {
+      mode = newMode;
+      codeArea.hidden = newMode !== 'text';
+      editorHost.hidden = newMode === 'text';
+      modeBar.querySelectorAll('.rte-mode-btn').forEach(function (b) { b.classList.toggle('is-active', b.dataset.mode === newMode); });
+    }
+
     return {
       getHTML: function () {
         var html = (mode === 'text' ? codeArea.value : quill.root.innerHTML).trim();
         return html === '<p><br></p>' ? '' : html;
       },
       setHTML: function (html) {
-        quill.root.innerHTML = html && html.trim() ? html : '<p><br></p>';
         codeArea.value = html || '';
-        if (mode === 'text') { codeArea.hidden = true; editorHost.hidden = false; mode = 'visual';
-          modeBar.querySelectorAll('.rte-mode-btn').forEach(function (b) { b.classList.toggle('is-active', b.dataset.mode === 'visual'); });
+        // Content with custom widgets (buttons, SVG icons, forms — e.g. an FAQ
+        // accordion) gets silently stripped the instant it enters Quill's DOM,
+        // even just by opening it. Keep it safely in Text mode until the user
+        // explicitly opts into Visual (and accepts the strip-warning there).
+        if (/<button|<svg|<form/i.test(html || '')) {
+          setActiveMode('text');
+        } else {
+          quill.root.innerHTML = html && html.trim() ? html : '<p><br></p>';
+          setActiveMode('visual');
         }
       },
     };
