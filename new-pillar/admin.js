@@ -181,6 +181,13 @@
           codeArea.hidden = false;
           mode = 'text';
         } else {
+          var hasCustomWidgets = /<button|<svg|<form/i.test(codeArea.value);
+          if (hasCustomWidgets && !confirm(
+            'This content has custom elements (like buttons, icons, or an FAQ accordion) that the Visual editor cannot display — switching will permanently strip them out.\n\n' +
+            'Click Cancel to stay in Text mode and keep this content safe, or OK to continue anyway.'
+          )) {
+            return;
+          }
           quill.root.innerHTML = codeArea.value.trim() || '<p><br></p>';
           codeArea.hidden = true;
           editorHost.hidden = false;
