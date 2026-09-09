@@ -9,6 +9,14 @@
       return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c];
     });
   }
+  function isVideoUrl(url) {
+    return /\.(mp4|webm|mov|mkv)(\?|$)/i.test(url || '');
+  }
+  function mediaThumb(url) {
+    return isVideoUrl(url)
+      ? '<video src="' + esc(url) + '" muted preload="metadata"></video>'
+      : '<img src="' + esc(url) + '" loading="lazy">';
+  }
 
   function toast(msg, isError) {
     var el = $('#toast');
@@ -44,6 +52,20 @@
   }
 
   async function uploadFile(file) {
+    // Videos (and anything else too big for a base64 JSON POST) go straight
+    // to Blob storage from the browser, bypassing the serverless function's
+    // request-size limit entirely.
+    var isVideo = file.type.indexOf('video/') === 0;
+    if (isVideo || file.size > 4 * 1024 * 1024) {
+      if (!window.__bwBlobUpload) throw new Error('Upload helper failed to load — please refresh the page and try again.');
+      var safeName = file.name.replace(/[^a-zA-Z0-9._-]/g, '_');
+      var key = 'uploads/' + Date.now() + '-' + Math.random().toString(36).slice(2, 8) + '-' + safeName;
+      var blob = await window.__bwBlobUpload(key, file, {
+        access: 'public',
+        handleUploadUrl: '/api/blob-upload',
+      });
+      return blob.url;
+    }
     var dataBase64 = await fileToBase64(file);
     var result = await api('/api/upload', {
       method: 'POST',
@@ -256,7 +278,7 @@
       } else {
         gridEl.innerHTML = allMedia.map(function (m) {
           var isSel = selected.indexOf(m.url) !== -1;
-          return '<div class="media-item' + (isSel ? ' is-selected' : '') + '" data-url="' + esc(m.url) + '"><img src="' + esc(m.url) + '" loading="lazy"></div>';
+          return '<div class="media-item' + (isSel ? ' is-selected' : '') + '" data-url="' + esc(m.url) + '">' + mediaThumb(m.url) + '</div>';
         }).join('');
         $all('.media-item', gridEl).forEach(function (el) {
           el.addEventListener('click', function () {
@@ -277,7 +299,11 @@
     async function loadMedia() {
       gridEl.innerHTML = '<div class="empty-note" style="grid-column:1/-1">Loading…</div>';
       try {
-        allMedia = await api('/api/media');
+        var media = await api('/api/media');
+        // This picker is only ever used for image fields (blog/project images,
+        // author photo) — videos live in the Media Library tab and get used
+        // via the Content editor's own Video button instead.
+        allMedia = media.filter(function (m) { return !isVideoUrl(m.url); });
         renderGrid();
       } catch (err) {
         gridEl.innerHTML = '<div class="empty-note" style="grid-column:1/-1">' + esc(err.message) + '</div>';
@@ -878,11 +904,11 @@
     try {
       var media = await api('/api/media');
       if (!media.length) {
-        gridEl.innerHTML = '<div class="empty-note" style="grid-column:1/-1">No images uploaded yet. Click "+ Upload image" to add one.</div>';
+        gridEl.innerHTML = '<div class="empty-note" style="grid-column:1/-1">Nothing uploaded yet. Click "+ Upload image or video" to add one.</div>';
         return;
       }
       gridEl.innerHTML = media.map(function (m) {
-        return '<div class="media-item"><img src="' + esc(m.url) + '" loading="lazy">' +
+        return '<div class="media-item">' + mediaThumb(m.url) +
           (m.source === 'upload' ? '<button type="button" class="rm" data-url="' + esc(m.url) + '">Delete</button>' : '') +
           '</div>';
       }).join('');
