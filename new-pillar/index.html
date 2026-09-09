@@ -37,7 +37,7 @@
       <button class="nav-item" data-tab="careers">Careers — Current Openings</button>
       <button class="nav-item" data-tab="settings">Settings — Authors</button>
       <button class="nav-item" data-tab="media">Media Library</button>
-      <button class="nav-item" data-tab="enquiries">Enquiries</button>
+      <button class="nav-item" data-tab="enquiries">Leads</button>
     </nav>
     <button id="logout-btn" class="btn btn-ghost logout-btn">Log out</button>
   </aside>
@@ -95,7 +95,7 @@
     <!-- ENQUIRIES TAB -->
     <section class="tab-panel" id="tab-enquiries">
       <div class="panel-head">
-        <h2>Enquiries</h2>
+        <h2>Leads</h2>
       </div>
       <div class="subtabs">
         <button class="subtab-item is-active" data-subtab="project-enquiry">Project enquiry</button>
@@ -104,6 +104,13 @@
       </div>
       <div class="subtab-panel is-active" id="subtab-project-enquiry">
         <div class="export-row">
+          <select class="export-date-filter" data-date-filter="project-enquiry">
+            <option value="all">All time</option>
+            <option value="today">Today</option>
+            <option value="7d">Last 7 days</option>
+            <option value="30d">Last 30 days</option>
+            <option value="month">This month</option>
+          </select>
           <button class="btn btn-sm" data-export-csv="project-enquiry">Export Excel (CSV)</button>
           <button class="btn btn-sm" data-export-pdf="project-enquiry">Export PDF</button>
         </div>
@@ -111,6 +118,13 @@
       </div>
       <div class="subtab-panel" id="subtab-vendor-registration">
         <div class="export-row">
+          <select class="export-date-filter" data-date-filter="vendor-registration">
+            <option value="all">All time</option>
+            <option value="today">Today</option>
+            <option value="7d">Last 7 days</option>
+            <option value="30d">Last 30 days</option>
+            <option value="month">This month</option>
+          </select>
           <button class="btn btn-sm" data-export-csv="vendor-registration">Export Excel (CSV)</button>
           <button class="btn btn-sm" data-export-pdf="vendor-registration">Export PDF</button>
         </div>
@@ -118,6 +132,13 @@
       </div>
       <div class="subtab-panel" id="subtab-job-application">
         <div class="export-row">
+          <select class="export-date-filter" data-date-filter="job-application">
+            <option value="all">All time</option>
+            <option value="today">Today</option>
+            <option value="7d">Last 7 days</option>
+            <option value="30d">Last 30 days</option>
+            <option value="month">This month</option>
+          </select>
           <button class="btn btn-sm" data-export-csv="job-application">Export Excel (CSV)</button>
           <button class="btn btn-sm" data-export-pdf="job-application">Export PDF</button>
         </div>
@@ -230,6 +251,15 @@
       <div class="uploader" id="project-images-uploader">
         <div class="thumbs" id="project-images-thumbs"></div>
         <button type="button" class="btn btn-sm" id="project-images-add-btn">+ Add image</button>
+      </div>
+
+      <div class="row-2">
+        <label>Photo caption <span style="font-weight:400;color:var(--steel)">(optional, shown under the main photo)</span>
+          <input type="text" id="project-photo-caption" placeholder="e.g. Fig. 01 — NB Legacy Tower, ongoing">
+        </label>
+        <label>Photography credit <span style="font-weight:400;color:var(--steel)">(optional)</span>
+          <input type="text" id="project-photo-credit" placeholder="e.g. Photography: BlueWing DCPL">
+        </label>
       </div>
 
       <div class="table-editor-wrap">

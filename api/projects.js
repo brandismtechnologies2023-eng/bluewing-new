@@ -59,6 +59,8 @@ module.exports = async (req, res) => {
         category: body.category || '',
         tags: Array.isArray(body.tags) ? body.tags : [],
         images: Array.isArray(body.images) ? body.images : [],
+        photoCaption: body.photoCaption || '',
+        photoCredit: body.photoCredit || '',
         table: body.table && Array.isArray(body.table.rows) ? body.table : { headers: [], rows: [] },
         date: body.date || new Date().toISOString().slice(0, 10),
         published: body.published !== false,

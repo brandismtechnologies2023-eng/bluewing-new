@@ -154,7 +154,7 @@ h1,h2,h3,h4{margin:0;font-family:var(--f-display);font-weight:600;letter-spacing
 .brand{display:flex;align-items:center;gap:14px;flex:none}
 .brand img{height:44px;width:auto}
 /* Wordmark is bound to currentColor, so one asset serves every surface */
-.brand__mark{width:auto;height:34px;color:var(--ink);flex:none}
+.brand__mark{width:auto;height:34px;color:var(--ink);flex:none;transition:height var(--d2) var(--ease)}
 .hdr.stuck .brand__mark{height:30px}
 .brand__mark--sm{height:28px}
 .brand__div{width:1px;height:30px;background:var(--line)}
@@ -1115,8 +1115,7 @@ h1,h2,h3,h4{margin:0;font-family:var(--f-display);font-weight:600;letter-spacing
       return { '&':'&amp;', '<':'&lt;', '>':'&gt;', '"':'&quot;', "'":'&#39;' }[c];
     });
   }
-  fetch('/api/projects').then(function(r){ return r.ok ? r.json() : []; }).then(function(items){
-    if (!Array.isArray(items) || !items.length) return;
+  function render(items) {
     var published = items.filter(function(p){ return p.published !== false; });
     grid.innerHTML = published.map(function(p){
       var img = p.images && p.images[0] ? p.images[0].url : '';
@@ -1127,7 +1126,23 @@ h1,h2,h3,h4{margin:0;font-family:var(--f-display);font-weight:600;letter-spacing
         (img ? '<img decoding="async" src="' + esc(img) + '" alt="' + esc(p.title) + ' — a BlueWing Group project" loading="lazy" width="640" height="480">' : '') +
         '</div><div class="pj__b"><h3>' + esc(p.title) + '</h3><svg><use href="#i-arr"/></svg></div></a>';
     }).join('');
-  }).catch(function(){});
+  }
+  function load(attempt) {
+    fetch('/api/projects').then(function(r){
+      if (!r.ok) throw new Error('bad status');
+      return r.json();
+    }).then(function(items){
+      if (!Array.isArray(items) || !items.length) throw new Error('empty');
+      render(items);
+    }).catch(function(){
+      if (attempt < 2) {
+        setTimeout(function(){ load(attempt + 1); }, 1200);
+      } else {
+        grid.innerHTML = '<p style="grid-column:1/-1;color:var(--steel)">Projects could not be loaded right now — please refresh the page.</p>';
+      }
+    });
+  }
+  load(0);
 })();
 </script>
 </div>

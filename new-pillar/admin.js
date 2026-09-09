@@ -569,6 +569,8 @@
     $('#project-status').value = p ? p.status : 'Ongoing';
     $('#project-category').value = p ? p.category : '';
     $('#project-tags').value = p && p.tags ? p.tags.join(', ') : '';
+    $('#project-photo-caption').value = p ? (p.photoCaption || '') : '';
+    $('#project-photo-credit').value = p ? (p.photoCredit || '') : '';
     projectUploader.setItems(p ? (p.images || []) : []);
     tableState = p && p.table && p.table.headers && p.table.headers.length
       ? { headers: p.table.headers.slice(), rows: p.table.rows.map(function (r) { return r.slice(); }) }
@@ -591,6 +593,8 @@
       tags: $('#project-tags').value.split(',').map(function (s) { return s.trim(); }).filter(Boolean),
       content: getProjectRTE().getHTML(),
       images: projectUploader.getItems(),
+      photoCaption: $('#project-photo-caption').value.trim(),
+      photoCredit: $('#project-photo-credit').value.trim(),
       table: tableState,
       published: $('#project-published').checked,
     };
@@ -938,10 +942,40 @@
     } catch (err) {
       $('#enquiries-job-list').innerHTML = '<div class="empty-note">' + esc(err.message) + '</div>';
     }
+    ['project-enquiry', 'vendor-registration', 'job-application'].forEach(updateExportState);
   }
 
+  function getDateFilter(formType) {
+    var sel = document.querySelector('.export-date-filter[data-date-filter="' + formType + '"]');
+    return sel ? sel.value : 'all';
+  }
+
+  function filterEntriesByDate(entries, range) {
+    if (range === 'all') return entries;
+    var now = new Date();
+    return entries.filter(function (e) {
+      var d = new Date(e.submittedAt);
+      if (range === 'today') return d.toDateString() === now.toDateString();
+      if (range === '7d') return (now - d) <= 7 * 24 * 60 * 60 * 1000;
+      if (range === '30d') return (now - d) <= 30 * 24 * 60 * 60 * 1000;
+      if (range === 'month') return d.getMonth() === now.getMonth() && d.getFullYear() === now.getFullYear();
+      return true;
+    });
+  }
+
+  function updateExportState(formType) {
+    var count = filterEntriesByDate(enquiryData[formType] || [], getDateFilter(formType)).length;
+    $all('[data-export-csv="' + formType + '"], [data-export-pdf="' + formType + '"]').forEach(function (b) {
+      b.disabled = count === 0;
+    });
+  }
+
+  $all('.export-date-filter').forEach(function (sel) {
+    sel.addEventListener('change', function () { updateExportState(sel.dataset.dateFilter); });
+  });
+
   function exportRows(formType) {
-    var entries = enquiryData[formType] || [];
+    var entries = filterEntriesByDate(enquiryData[formType] || [], getDateFilter(formType));
     var order = FIELD_ORDER[formType];
     var headers = ['Submitted At'].concat(order.map(function (k) { return FIELD_LABELS[k] || k; })).concat(['Message']);
     var rows = entries.map(function (e) {
@@ -954,6 +988,7 @@
 
   function exportCSV(formType) {
     var data = exportRows(formType);
+    if (!data.rows.length) { toast('No submissions in this date range', true); return; }
     var esc2 = function (v) { return '"' + String(v).replace(/"/g, '""') + '"'; };
     var csv = [data.headers.map(esc2).join(',')].concat(
       data.rows.map(function (r) { return r.map(esc2).join(','); })
@@ -972,9 +1007,15 @@
   function exportPDF(formType) {
     if (!window.jspdf) { toast('PDF library failed to load', true); return; }
     var data = exportRows(formType);
+    if (!data.rows.length) { toast('No submissions in this date range', true); return; }
+    var titles = {
+      'vendor-registration': 'Vendor Registrations',
+      'job-application': 'Job Applications',
+      'project-enquiry': 'Project Enquiries',
+    };
     var doc = new window.jspdf.jsPDF({ orientation: 'landscape' });
     doc.setFontSize(14);
-    doc.text(formType === 'vendor-registration' ? 'Vendor Registrations' : 'Project Enquiries', 14, 14);
+    doc.text(titles[formType] || 'Leads', 14, 14);
     doc.autoTable({
       head: [data.headers],
       body: data.rows,

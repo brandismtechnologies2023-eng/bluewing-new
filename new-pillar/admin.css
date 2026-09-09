@@ -112,7 +112,9 @@ label textarea{resize:vertical}
 
 /* sub-tabs (Enquiries) */
 .subtabs{display:flex;gap:8px;margin-bottom:20px;border-bottom:1px solid var(--line)}
-.export-row{display:flex;gap:8px;margin-bottom:16px}
+.export-row{display:flex;gap:8px;margin-bottom:16px;align-items:center}
+.export-date-filter{border:1px solid var(--line-dk);background:var(--white);color:var(--ink);padding:5px 10px;border-radius:var(--r);font-size:12px}
+.btn:disabled{opacity:.45;cursor:not-allowed}
 .subtab-item{background:none;border:none;border-bottom:2px solid transparent;padding:10px 4px;margin-bottom:-1px;cursor:pointer;font-weight:600;font-size:13px;color:var(--steel)}
 .subtab-item.is-active{color:var(--accent);border-color:var(--accent)}
 .subtab-panel{display:none}

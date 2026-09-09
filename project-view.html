@@ -148,7 +148,7 @@ h1,h2,h3,h4{margin:0;font-family:var(--f-display);font-weight:600;letter-spacing
 .brand{display:flex;align-items:center;gap:14px;flex:none}
 .brand img{height:44px;width:auto}
 /* Wordmark is bound to currentColor, so one asset serves every surface */
-.brand__mark{width:auto;height:34px;color:var(--ink);flex:none}
+.brand__mark{width:auto;height:34px;color:var(--ink);flex:none;transition:height var(--d2) var(--ease)}
 .hdr.stuck .brand__mark{height:30px}
 .brand__mark--sm{height:28px}
 .brand__div{width:1px;height:30px;background:var(--line)}
@@ -1120,6 +1120,7 @@ h1,h2,h3,h4{margin:0;font-family:var(--f-display);font-weight:600;letter-spacing
 <section class="shots" id="pv-gallery-section" style="display:none">
 <div class="shell">
 <div class="shots__fig rv" id="pv-gallery-hero"></div>
+<div class="shots__cap rv" id="pv-gallery-cap" style="display:none"><p id="pv-photo-caption"></p><p id="pv-photo-credit"></p></div>
 <div class="shots__g rv" id="pv-gallery-grid"></div>
 </div>
 </section>
@@ -1419,6 +1420,11 @@ h1,h2,h3,h4{margin:0;font-family:var(--f-display);font-weight:600;letter-spacing
         gridEl.innerHTML = rest.map(function(img){
           return '<img decoding="async" src="' + esc(img.url) + '" alt="' + esc(p.title) + '" loading="lazy" width="600" height="450">';
         }).join('');
+      }
+      if (p.photoCaption || p.photoCredit) {
+        document.getElementById('pv-gallery-cap').style.display = '';
+        document.getElementById('pv-photo-caption').textContent = p.photoCaption || '';
+        document.getElementById('pv-photo-credit').textContent = p.photoCredit || '';
       }
     }
 

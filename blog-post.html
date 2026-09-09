@@ -148,7 +148,7 @@ h1,h2,h3,h4{margin:0;font-family:var(--f-display);font-weight:600;letter-spacing
 .brand{display:flex;align-items:center;gap:14px;flex:none}
 .brand img{height:44px;width:auto}
 /* Wordmark is bound to currentColor, so one asset serves every surface */
-.brand__mark{width:auto;height:34px;color:var(--ink);flex:none}
+.brand__mark{width:auto;height:34px;color:var(--ink);flex:none;transition:height var(--d2) var(--ease)}
 .hdr.stuck .brand__mark{height:30px}
 .brand__mark--sm{height:28px}
 .brand__div{width:1px;height:30px;background:var(--line)}
@@ -1386,7 +1386,7 @@ h1,h2,h3,h4{margin:0;font-family:var(--f-display);font-weight:600;letter-spacing
 .bp-grid img{width:100%;aspect-ratio:4/3;object-fit:cover;border-radius:var(--r)}
 .bp-only-grid{display:grid;grid-template-columns:1fr 1fr;gap:6px}
 .bp-only-grid img{width:100%;aspect-ratio:1;object-fit:cover}
-.bp-feature{width:100%;aspect-ratio:16/9;object-fit:cover;border-radius:var(--r);display:block;cursor:default}
+#bp-media img.bp-feature{width:100%;max-width:none;max-height:none;aspect-ratio:16/9;object-fit:cover;border-radius:var(--r);display:block;cursor:default;margin:0}
 .bp-video{position:relative;padding-top:56.25%;border-radius:var(--r);overflow:hidden;background:#000}
 .bp-video iframe,.bp-video video{position:absolute;inset:0;width:100%;height:100%;border:0}
 @media(max-width:640px){.bp-grid{grid-template-columns:repeat(2,1fr)}}
