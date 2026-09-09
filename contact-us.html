@@ -698,11 +698,14 @@ h1,h2,h3,h4{margin:0;font-family:var(--f-display);font-weight:600;letter-spacing
   border-color:var(--accent);outline:none}
 .form-light .btn{width:100%;justify-content:center;margin-top:8px}
 .form-light .pform__n{color:var(--steel);margin-top:14px;font-size:var(--fs-xs)}
-.form-light .fld .phone-combo{display:flex;gap:8px}
-.form-light .fld .phone-combo select{flex:0 0 118px;width:auto;padding-left:10px;padding-right:6px}
-.form-light .fld .phone-combo input{flex:1;min-width:0}
+.form-light .fld .phone-combo{display:flex;align-items:stretch;border:1px solid var(--line);border-radius:var(--r);background:var(--paper);overflow:hidden}
+.form-light .fld .phone-combo select{flex:0 0 96px;width:auto;padding:14px 6px 14px 14px;border:none;border-right:1px solid var(--line);border-radius:0;background:transparent}
+.form-light .fld .phone-combo input{flex:1;min-width:0;border:none;border-radius:0;background:transparent;padding:14px 16px}
+.form-light .fld .phone-combo select:focus,.form-light .fld .phone-combo input:focus{outline:none}
+.form-light .fld .phone-combo:focus-within{border-color:var(--accent)}
 .fld .field-err{display:none;color:#c8102e;font-size:var(--fs-xs);margin-top:6px}
-.fld.has-err input,.fld.has-err select,.fld.has-err .phone-combo select,.fld.has-err .phone-combo input{border-color:#c8102e}
+.fld.has-err input,.fld.has-err select{border-color:#c8102e}
+.fld.has-err .phone-combo{border-color:#c8102e}
 .fld.has-err .field-err{display:block}
 @media(max-width:900px){.ct__in{grid-template-columns:1fr}}
 
