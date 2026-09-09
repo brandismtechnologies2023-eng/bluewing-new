@@ -1565,7 +1565,9 @@
     },
     "date": "2026-01-01",
     "published": true,
-    "legacyUrl": "projects/the-ten.html"
+    "legacyUrl": "projects/the-ten.html",
+    "photoCaption": "Fig. 01 — The Ten, completed",
+    "photoCredit": "Photography: BlueWing DCPL"
   },
   {
     "id": "legacy-west-coast-pharmaceutical-work-ltd",
