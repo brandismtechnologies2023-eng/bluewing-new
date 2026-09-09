@@ -1124,13 +1124,7 @@ h1,h2,h3,h4{margin:0;font-family:var(--f-display);font-weight:600;letter-spacing
 <div class="head rv"><div><p class="eyebrow">More reading</p><h2>Related <em>articles.</em></h2></div>
 <div><p>More writing from the team on construction in India.</p>
 <a class="tl" style="margin-top:18px" href="blog.html">All articles <svg><use href="#i-arr"/></svg></a></div></div>
-<div class="ins__g rv"><a class="art" href="automation-ready-warehouse-design-trends-transforming-gujarats-industrial-sector-in-2026.html">
-<div class="art__im"><img decoding="async" src="https://bluewing.brandismtechnologies.in/wp-content/uploads/2026/05/Automation-Ready-Warehouse-Design-Trends-Transforming-Gujarats-Industrial-Sector-in-2026_Blog-Banner-1-573x654.webp" alt="Automation-Ready Warehouse Design Trends Transforming Gujarat's Industrial Sector in 2026" loading="lazy" width="600" height="400"></div>
-<div><p class="lbl">Construction Industry</p><h3>Automation-Ready Warehouse Design Trends Transforming Gujarat's Industrial Sector in 2026</h3></div></a><a class="art" href="top-construction-trends-in-india-2026-technology-sustainability-infrastructure-boom.html">
-<div class="art__im"><img decoding="async" src="https://bluewing.brandismtechnologies.in/wp-content/uploads/2026/05/Construction-Trends-2026_New-1-573x424.webp" alt="Top Construction Trends in India 2026: Technology, Sustainability &amp; Infrastructure Boom" loading="lazy" width="600" height="400"></div>
-<div><p class="lbl">Construction Techniques</p><h3>Top Construction Trends in India 2026: Technology, Sustainability &amp; Infrastructure Boom</h3></div></a><a class="art" href="construction-quality-in-ahmedabad-are-we-building-fast-or-building-right.html">
-<div class="art__im"><img decoding="async" src="https://bluewing.brandismtechnologies.in/wp-content/uploads/2026/04/Construction-Quality-in-Ahmedabad-Are-We-Building-Fast-or-Building-Right_Banner-1-573x600.webp" alt="Construction Quality in Ahmedabad: Are We Building Fast or Building Right?" loading="lazy" width="600" height="400"></div>
-<div><p class="lbl">Construction Industry</p><h3>Construction Quality in Ahmedabad: Are We Building Fast or Building Right?</h3></div></a></div>
+<div class="ins__g rv" id="bp-related"></div>
 </div>
 </section><section class="cta" id="contact">
 <div class="shell cta__center">
@@ -1469,6 +1463,20 @@ h1,h2,h3,h4{margin:0;font-family:var(--f-display);font-weight:600;letter-spacing
       document.getElementById('bp-tags').textContent = 'Tags: ' + p.tags.join(', ');
     }
     renderMedia(p);
+
+    // The article body (including any FAQ accordions) loads after the
+    // page's own scripts already ran their one-time .acc__b binding, so
+    // newly injected accordion buttons need their click behaviour wired here.
+    document.querySelectorAll('#bp-content .acc__b').forEach(function (btn) {
+      var body = btn.nextElementSibling;
+      var set = function (open) {
+        btn.setAttribute('aria-expanded', String(open));
+        body.style.height = open ? body.scrollHeight + 'px' : '0px';
+      };
+      if (btn.getAttribute('aria-expanded') === 'true') requestAnimationFrame(function () { set(true); });
+      btn.addEventListener('click', function () { set(btn.getAttribute('aria-expanded') !== 'true'); });
+    });
+
     if (p.authorId) {
       fetch('/api/authors?id=' + encodeURIComponent(p.authorId)).then(function(r){
         return r.ok ? r.json() : null;
@@ -1480,6 +1488,18 @@ h1,h2,h3,h4{margin:0;font-family:var(--f-display);font-weight:600;letter-spacing
           '<div><b>' + esc(a.name) + '</b>' + (a.designation ? '<span>' + esc(a.designation) + '</span>' : '') + '</div>';
       }).catch(function(){});
     }
+
+    fetch('/api/blog').then(function(r){ return r.ok ? r.json() : []; }).then(function(all){
+      var others = all.filter(function(o){ return o.slug !== p.slug && o.published !== false; }).slice(0, 3);
+      var relEl = document.getElementById('bp-related');
+      if (!others.length) { relEl.closest('section').style.display = 'none'; return; }
+      relEl.innerHTML = others.map(function(o){
+        var img = o.coverImage || (o.media && o.media[0] && o.media[0].url) || '';
+        return '<a class="art" href="blog-post.html?slug=' + encodeURIComponent(o.slug) + '">' +
+          '<div class="art__im">' + (img ? '<img decoding="async" src="' + esc(img) + '" alt="' + esc(o.title) + '" loading="lazy" width="600" height="400">' : '') + '</div>' +
+          '<div><p class="lbl">' + esc(o.category || 'Blog') + '</p><h3>' + esc(o.title) + '</h3></div></a>';
+      }).join('');
+    }).catch(function(){});
   }).catch(function(){
     document.getElementById('bp-title').textContent = 'Article not found';
     document.getElementById('bp-lead').textContent = 'This article may have been removed or the link is incorrect.';
