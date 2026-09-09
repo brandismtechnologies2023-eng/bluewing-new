@@ -193,13 +193,14 @@
               var url = prompt('Paste a YouTube link, or the link to an uploaded video file (mp4/webm):', 'https://');
               if (!url || url === 'https://') return;
               var yt = url.match(/(?:youtu\.be\/|youtube\.com\/(?:watch\?v=|embed\/))([\w-]{6,})/);
-              if (yt) {
-                quill.insertEmbed(range.index, 'video', 'https://www.youtube.com/embed/' + yt[1], 'user');
-                quill.setSelection(range.index + 1);
-              } else {
-                quill.clipboard.dangerouslyPasteHTML(range.index,
-                  '<p><video controls src="' + url.replace(/"/g, '&quot;') + '"></video></p>', 'user');
-              }
+              // Quill only recognizes its own 'video' embed (an iframe) — a
+              // raw <video> tag isn't a format it knows about, so it gets
+              // silently dropped the instant it's inserted. Browsers happily
+              // play a direct video file inside an iframe too, so route both
+              // YouTube and direct file links through the same native embed.
+              var embedUrl = yt ? ('https://www.youtube.com/embed/' + yt[1]) : url;
+              quill.insertEmbed(range.index, 'video', embedUrl, 'user');
+              quill.setSelection(range.index + 1);
             },
           },
         },
@@ -909,6 +910,7 @@
       }
       gridEl.innerHTML = media.map(function (m) {
         return '<div class="media-item">' + mediaThumb(m.url) +
+          '<button type="button" class="copy-link" data-url="' + esc(m.url) + '">Copy link</button>' +
           (m.source === 'upload' ? '<button type="button" class="rm" data-url="' + esc(m.url) + '">Delete</button>' : '') +
           '</div>';
       }).join('');
@@ -916,6 +918,17 @@
         b.addEventListener('click', function (e) {
           e.stopPropagation();
           deleteMedia(b.dataset.url);
+        });
+      });
+      $all('.copy-link', gridEl).forEach(function (b) {
+        b.addEventListener('click', async function (e) {
+          e.stopPropagation();
+          try {
+            await navigator.clipboard.writeText(b.dataset.url);
+            toast('Link copied');
+          } catch (err) {
+            prompt('Copy this link:', b.dataset.url);
+          }
         });
       });
     } catch (err) {
