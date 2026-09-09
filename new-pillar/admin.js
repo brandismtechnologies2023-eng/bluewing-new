@@ -408,6 +408,35 @@
     refreshCategoryList('#blog-category-list', blogPosts, 'category');
   }
 
+  var faqState = [];
+  function renderFaqEditor() {
+    var listEl = $('#blog-faq-list');
+    if (!faqState.length) {
+      listEl.innerHTML = '<p class="faq-hint">No FAQs yet — the FAQ section stays hidden on the site until you add at least one.</p>';
+      return;
+    }
+    listEl.innerHTML = faqState.map(function (f, i) {
+      return '<div class="faq-item">' +
+        '<div class="faq-item-head"><b>FAQ ' + (i + 1) + '</b><button type="button" class="btn btn-sm btn-danger" data-faq-remove="' + i + '">Remove</button></div>' +
+        '<input type="text" data-faq-q="' + i + '" placeholder="Question" value="' + esc(f.question) + '">' +
+        '<textarea data-faq-a="' + i + '" placeholder="Answer — start a line with - for a bullet point">' + esc(f.answer) + '</textarea>' +
+        '</div>';
+    }).join('');
+    $all('[data-faq-remove]', listEl).forEach(function (b) {
+      b.addEventListener('click', function () { faqState.splice(parseInt(b.dataset.faqRemove, 10), 1); renderFaqEditor(); });
+    });
+    $all('[data-faq-q]', listEl).forEach(function (i) {
+      i.addEventListener('input', function () { faqState[parseInt(i.dataset.faqQ, 10)].question = i.value; });
+    });
+    $all('[data-faq-a]', listEl).forEach(function (i) {
+      i.addEventListener('input', function () { faqState[parseInt(i.dataset.faqA, 10)].answer = i.value; });
+    });
+  }
+  $('#blog-faq-add-btn').addEventListener('click', function () {
+    faqState.push({ question: '', answer: '' });
+    renderFaqEditor();
+  });
+
   function openBlogModal(post) {
     $('#blog-modal-title').textContent = post ? 'Edit blog post' : 'New blog post';
     $('#blog-id').value = post ? post.id : '';
@@ -421,6 +450,8 @@
     $('#blog-video-url').value = post ? (post.videoUrl || '') : '';
     blogUploader.setItems(post ? (post.media || []) : []);
     updateBlogMediaVisibility();
+    faqState = post && Array.isArray(post.faqs) ? post.faqs.map(function (f) { return { question: f.question, answer: f.answer }; }) : [];
+    renderFaqEditor();
     $('#blog-published').checked = !post || post.published !== false;
     openModal('blog-modal');
     // Quill must initialize while its container is actually visible, or its
@@ -439,6 +470,7 @@
       content: getBlogRTE().getHTML(),
       category: $('#blog-category').value.trim(),
       tags: $('#blog-tags').value.split(',').map(function (s) { return s.trim(); }).filter(Boolean),
+      faqs: faqState.filter(function (f) { return f.question.trim() && f.answer.trim(); }),
       authorId: $('#blog-author').value,
       mediaType: $('input[name="blog-media-type"]:checked').value,
       media: blogUploader.getItems(),
@@ -479,6 +511,7 @@
   /* ---------- PROJECTS ---------- */
   var projectRTE = null;
   function getProjectRTE() { if (!projectRTE) projectRTE = createRTE($('#project-content-rte')); return projectRTE; }
+  var projectFeaturedUploader = createImageUploader($('#project-featured-add-btn'), $('#project-featured-thumbs'), [], { multiple: false });
   var projectUploader = createImageUploader($('#project-images-add-btn'), $('#project-images-thumbs'), [], { multiple: true });
   var projects = [];
   var tableState = { headers: ['Field', 'Value'], rows: [['Status', 'Ongoing'], ['Location', 'Gujarat, India']] };
@@ -571,7 +604,9 @@
     $('#project-tags').value = p && p.tags ? p.tags.join(', ') : '';
     $('#project-photo-caption').value = p ? (p.photoCaption || '') : '';
     $('#project-photo-credit').value = p ? (p.photoCredit || '') : '';
-    projectUploader.setItems(p ? (p.images || []) : []);
+    var allImages = p ? (p.images || []) : [];
+    projectFeaturedUploader.setItems(allImages[0] ? [allImages[0]] : []);
+    projectUploader.setItems(allImages.slice(1));
     tableState = p && p.table && p.table.headers && p.table.headers.length
       ? { headers: p.table.headers.slice(), rows: p.table.rows.map(function (r) { return r.slice(); }) }
       : { headers: ['Field', 'Value'], rows: [['Status', 'Ongoing'], ['Location', 'Gujarat, India']] };
@@ -592,7 +627,7 @@
       category: $('#project-category').value.trim(),
       tags: $('#project-tags').value.split(',').map(function (s) { return s.trim(); }).filter(Boolean),
       content: getProjectRTE().getHTML(),
-      images: projectUploader.getItems(),
+      images: projectFeaturedUploader.getItems().concat(projectUploader.getItems()),
       photoCaption: $('#project-photo-caption').value.trim(),
       photoCredit: $('#project-photo-credit').value.trim(),
       table: tableState,

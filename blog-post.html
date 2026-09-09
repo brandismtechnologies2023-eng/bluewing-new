@@ -516,7 +516,7 @@ h1,h2,h3,h4{margin:0;font-family:var(--f-display);font-weight:600;letter-spacing
 .cta{position:relative;background:var(--ink);color:#fff;padding-block:clamp(70px,8.5vw,116px);
   border-top:1px solid var(--line-dk)}
 .cta__in{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,.82fr);gap:clamp(36px,6vw,90px);align-items:center}
-.cta h2{font-size:var(--fs-h2);max-width:16ch;margin:22px 0 20px}
+.cta h2{font-size:var(--fs-h2);max-width:17ch;margin:22px 0 20px}
 .cta h2 em{font-style:normal;color:var(--accent)}
 .cta__ld{color:var(--on-dark);max-width:48ch;margin-bottom:34px}
 .cta__a{display:flex;flex-wrap:wrap;gap:14px}
@@ -1117,6 +1117,10 @@ h1,h2,h3,h4{margin:0;font-family:var(--f-display);font-weight:600;letter-spacing
 <div class="rt__body">
 <div id="bp-media" style="margin-bottom:24px"></div>
 <div id="bp-content"></div>
+<div id="bp-faq-section" style="display:none">
+<h3>FAQs</h3>
+<div class="acc" id="bp-faq-list"></div>
+</div>
 </div>
 </div>
 </section>
@@ -1484,6 +1488,37 @@ h1,h2,h3,h4{margin:0;font-family:var(--f-display);font-weight:600;letter-spacing
       if (btn.getAttribute('aria-expanded') === 'true') requestAnimationFrame(function () { set(true); });
       btn.addEventListener('click', function () { set(btn.getAttribute('aria-expanded') !== 'true'); });
     });
+
+    if (Array.isArray(p.faqs) && p.faqs.length) {
+      function formatFaqAnswer(text) {
+        var blocks = String(text || '').split(/\n\s*\n/);
+        return blocks.map(function (block) {
+          var lines = block.split('\n').map(function (l) { return l.trim(); }).filter(Boolean);
+          var isList = lines.length > 0 && lines.every(function (l) { return l.indexOf('- ') === 0; });
+          if (isList) {
+            return '<ul>' + lines.map(function (l) { return '<li>' + esc(l.slice(2)) + '</li>'; }).join('') + '</ul>';
+          }
+          return '<p>' + esc(block.trim()).replace(/\n/g, '<br>') + '</p>';
+        }).join('');
+      }
+      var faqSection = document.getElementById('bp-faq-section');
+      var faqList = document.getElementById('bp-faq-list');
+      faqSection.style.display = '';
+      faqList.innerHTML = p.faqs.map(function (f, i) {
+        return '<div class="acc__i"><button class="acc__b" aria-expanded="' + (i === 0 ? 'true' : 'false') + '">' +
+          esc(f.question) + '<span class="acc__ic"><svg><use href="#i-plus"/></svg></span></button>' +
+          '<div class="acc__p">' + formatFaqAnswer(f.answer) + '</div></div>';
+      }).join('');
+      document.querySelectorAll('#bp-faq-list .acc__b').forEach(function (btn) {
+        var body = btn.nextElementSibling;
+        var set = function (open) {
+          btn.setAttribute('aria-expanded', String(open));
+          body.style.height = open ? body.scrollHeight + 'px' : '0px';
+        };
+        if (btn.getAttribute('aria-expanded') === 'true') requestAnimationFrame(function () { set(true); });
+        btn.addEventListener('click', function () { set(btn.getAttribute('aria-expanded') !== 'true'); });
+      });
+    }
 
     if (p.authorId) {
       fetch('/api/authors?id=' + encodeURIComponent(p.authorId)).then(function(r){

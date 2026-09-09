@@ -206,6 +206,14 @@
         </label>
       </div>
 
+      <div class="faq-editor-wrap">
+        <div class="faq-editor-head">
+          <label style="margin-bottom:0">FAQs <span style="font-weight:400;color:var(--steel)">(optional — shown as an expandable section at the end of the article; hidden entirely if empty)</span></label>
+          <button type="button" class="btn btn-sm" id="blog-faq-add-btn">+ Add FAQ</button>
+        </div>
+        <div id="blog-faq-list"></div>
+      </div>
+
       <label class="checkbox-row"><input type="checkbox" id="blog-published" checked> Published (visible on site)</label>
     </div>
     <div class="modal-foot">
@@ -247,7 +255,13 @@
       <div class="field-label">Content / description</div>
       <div class="rte" id="project-content-rte"></div>
 
-      <label>Images</label>
+      <label>Featured image <span style="font-weight:400;color:var(--steel)">(the large photo at the top of the project page)</span></label>
+      <div class="uploader" id="project-featured-uploader">
+        <div class="thumbs" id="project-featured-thumbs"></div>
+        <button type="button" class="btn btn-sm" id="project-featured-add-btn">+ Set featured image</button>
+      </div>
+
+      <label>Gallery images <span style="font-weight:400;color:var(--steel)">(smaller photos shown below the featured one)</span></label>
       <div class="uploader" id="project-images-uploader">
         <div class="thumbs" id="project-images-thumbs"></div>
         <button type="button" class="btn btn-sm" id="project-images-add-btn">+ Add image</button>

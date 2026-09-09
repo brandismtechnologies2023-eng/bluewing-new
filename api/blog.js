@@ -58,6 +58,7 @@ module.exports = async (req, res) => {
         content: body.content || '',
         category: body.category || '',
         tags: Array.isArray(body.tags) ? body.tags : [],
+        faqs: Array.isArray(body.faqs) ? body.faqs.filter((f) => f && f.question && f.answer) : [],
         authorId: body.authorId || '',
         mediaType: body.mediaType || 'grid',
         media: Array.isArray(body.media) ? body.media : [],
@@ -90,6 +91,7 @@ module.exports = async (req, res) => {
         ...body,
         slug,
         tags: Array.isArray(body.tags) ? body.tags : existing.tags,
+        faqs: Array.isArray(body.faqs) ? body.faqs.filter((f) => f && f.question && f.answer) : existing.faqs,
         media: Array.isArray(body.media) ? body.media : existing.media,
       };
       await writeJson(PATH, posts, `admin: update blog post "${posts[idx].title}"`);

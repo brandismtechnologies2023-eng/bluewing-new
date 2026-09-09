@@ -88,6 +88,14 @@ label textarea{resize:vertical}
 
 /* media type */
 .media-type-fs{border:1px solid var(--line);border-radius:var(--r);padding:12px 14px;margin-bottom:14px}
+.faq-editor-wrap{margin-bottom:14px}
+.faq-editor-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px}
+.faq-item{border:1px solid var(--line);border-radius:var(--r);padding:12px 14px;margin-bottom:10px;background:#fff}
+.faq-item .faq-item-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px}
+.faq-item .faq-item-head b{font-size:11.5px;color:var(--steel);text-transform:uppercase;letter-spacing:.04em}
+.faq-item input,.faq-item textarea{width:100%;padding:9px 11px;border:1px solid var(--line-dk);border-radius:var(--r);margin-top:6px;font:inherit;font-size:13px}
+.faq-item textarea{min-height:80px;resize:vertical}
+.faq-item .faq-hint{font-size:11px;color:var(--steel);margin-top:4px}
 .media-type-fs legend{font-size:12px;font-weight:700;color:var(--steel);padding:0 6px}
 .media-type-opts{display:flex;flex-wrap:wrap;gap:8px}
 .radio-pill{display:inline-flex;align-items:center;gap:6px;border:1px solid var(--line-dk);border-radius:99px;padding:6px 12px;font-size:12.5px;font-weight:500;margin:0;cursor:pointer;color:var(--ink)}
