@@ -331,7 +331,8 @@
   }
 
   /* ---------- BLOG ---------- */
-  var blogRTE = createRTE($('#blog-content-rte'));
+  var blogRTE = null;
+  function getBlogRTE() { if (!blogRTE) blogRTE = createRTE($('#blog-content-rte')); return blogRTE; }
   var blogUploader = createImageUploader($('#blog-images-add-btn'), $('#blog-images-thumbs'), [], { multiple: true });
   var blogPosts = [];
 
@@ -395,7 +396,6 @@
     $('#blog-category').value = post ? post.category : '';
     $('#blog-tags').value = post && post.tags ? post.tags.join(', ') : '';
     $('#blog-author').value = post ? (post.authorId || '') : '';
-    blogRTE.setHTML(post ? post.content : '');
     var mediaType = post ? (post.mediaType || 'grid') : 'grid';
     $all('input[name="blog-media-type"]').forEach(function (r) { r.checked = r.value === mediaType; });
     $('#blog-video-url').value = post ? (post.videoUrl || '') : '';
@@ -403,6 +403,9 @@
     updateBlogMediaVisibility();
     $('#blog-published').checked = !post || post.published !== false;
     openModal('blog-modal');
+    // Quill must initialize while its container is actually visible, or its
+    // toolbar/editor sizing breaks — so create/populate it after the modal opens.
+    getBlogRTE().setHTML(post ? post.content : '');
   }
   $('#blog-new-btn').addEventListener('click', function () { openBlogModal(null); });
 
@@ -413,7 +416,7 @@
       id: $('#blog-id').value || undefined,
       title: title,
       excerpt: $('#blog-excerpt').value.trim(),
-      content: blogRTE.getHTML(),
+      content: getBlogRTE().getHTML(),
       category: $('#blog-category').value.trim(),
       tags: $('#blog-tags').value.split(',').map(function (s) { return s.trim(); }).filter(Boolean),
       authorId: $('#blog-author').value,
@@ -454,7 +457,8 @@
   }
 
   /* ---------- PROJECTS ---------- */
-  var projectRTE = createRTE($('#project-content-rte'));
+  var projectRTE = null;
+  function getProjectRTE() { if (!projectRTE) projectRTE = createRTE($('#project-content-rte')); return projectRTE; }
   var projectUploader = createImageUploader($('#project-images-add-btn'), $('#project-images-thumbs'), [], { multiple: true });
   var projects = [];
   var tableState = { headers: ['Field', 'Value'], rows: [['Status', 'Ongoing'], ['Location', 'Gujarat, India']] };
@@ -545,7 +549,6 @@
     $('#project-status').value = p ? p.status : 'Ongoing';
     $('#project-category').value = p ? p.category : '';
     $('#project-tags').value = p && p.tags ? p.tags.join(', ') : '';
-    projectRTE.setHTML(p ? p.content : '');
     projectUploader.setItems(p ? (p.images || []) : []);
     tableState = p && p.table && p.table.headers && p.table.headers.length
       ? { headers: p.table.headers.slice(), rows: p.table.rows.map(function (r) { return r.slice(); }) }
@@ -553,6 +556,7 @@
     renderTableEditor();
     $('#project-published').checked = !p || p.published !== false;
     openModal('project-modal');
+    getProjectRTE().setHTML(p ? p.content : '');
   }
   $('#projects-new-btn').addEventListener('click', function () { openProjectModal(null); });
 
@@ -565,7 +569,7 @@
       status: $('#project-status').value,
       category: $('#project-category').value.trim(),
       tags: $('#project-tags').value.split(',').map(function (s) { return s.trim(); }).filter(Boolean),
-      content: projectRTE.getHTML(),
+      content: getProjectRTE().getHTML(),
       images: projectUploader.getItems(),
       table: tableState,
       published: $('#project-published').checked,
@@ -601,7 +605,8 @@
   }
 
   /* ---------- CAREERS ---------- */
-  var careerRTE = createRTE($('#career-content-rte'));
+  var careerRTE = null;
+  function getCareerRTE() { if (!careerRTE) careerRTE = createRTE($('#career-content-rte')); return careerRTE; }
   var careers = [];
 
   function renderCareersList() {
@@ -647,9 +652,9 @@
     $('#career-type').value = c ? c.type : 'Full-time';
     $('#career-location').value = c ? c.location : 'Ahmedabad';
     $('#career-email').value = c ? c.applyEmail : 'careers@bluewingconstruction.com';
-    careerRTE.setHTML(c ? c.description : '');
     $('#career-active').checked = !c || c.active !== false;
     openModal('career-modal');
+    getCareerRTE().setHTML(c ? c.description : '');
   }
   $('#careers-new-btn').addEventListener('click', function () { openCareerModal(null); });
 
@@ -663,7 +668,7 @@
       type: $('#career-type').value,
       location: $('#career-location').value.trim(),
       applyEmail: $('#career-email').value.trim(),
-      description: careerRTE.getHTML(),
+      description: getCareerRTE().getHTML(),
       active: $('#career-active').checked,
     };
     var btn = $('#career-save-btn');
