@@ -150,7 +150,7 @@
             [{ header: [2, 3, false] }],
             ['bold', 'italic', 'underline', 'strike'],
             [{ list: 'ordered' }, { list: 'bullet' }],
-            ['blockquote', 'link', 'image'],
+            ['blockquote', 'link', 'image', 'video'],
             ['clean'],
           ],
           handlers: {
@@ -165,6 +165,19 @@
                   }
                 },
               });
+            },
+            video: function () {
+              var range = quill.getSelection(true);
+              var url = prompt('Paste a YouTube link, or the link to an uploaded video file (mp4/webm):', 'https://');
+              if (!url || url === 'https://') return;
+              var yt = url.match(/(?:youtu\.be\/|youtube\.com\/(?:watch\?v=|embed\/))([\w-]{6,})/);
+              if (yt) {
+                quill.insertEmbed(range.index, 'video', 'https://www.youtube.com/embed/' + yt[1], 'user');
+                quill.setSelection(range.index + 1);
+              } else {
+                quill.clipboard.dangerouslyPasteHTML(range.index,
+                  '<p><video controls src="' + url.replace(/"/g, '&quot;') + '"></video></p>', 'user');
+              }
             },
           },
         },
@@ -181,9 +194,9 @@
           codeArea.hidden = false;
           mode = 'text';
         } else {
-          var hasCustomWidgets = /<button|<svg|<form/i.test(codeArea.value);
+          var hasCustomWidgets = /<button|<svg|<form|<video/i.test(codeArea.value);
           if (hasCustomWidgets && !confirm(
-            'This content has custom elements (like buttons, icons, or an FAQ accordion) that the Visual editor cannot display — switching will permanently strip them out.\n\n' +
+            'This content has custom elements (like buttons, icons, an uploaded video, or an FAQ accordion) that the Visual editor cannot display — switching will permanently strip them out.\n\n' +
             'Click Cancel to stay in Text mode and keep this content safe, or OK to continue anyway.'
           )) {
             return;
@@ -215,7 +228,7 @@
         // accordion) gets silently stripped the instant it enters Quill's DOM,
         // even just by opening it. Keep it safely in Text mode until the user
         // explicitly opts into Visual (and accepts the strip-warning there).
-        if (/<button|<svg|<form/i.test(html || '')) {
+        if (/<button|<svg|<form|<video/i.test(html || '')) {
           setActiveMode('text');
         } else {
           quill.root.innerHTML = html && html.trim() ? html : '<p><br></p>';

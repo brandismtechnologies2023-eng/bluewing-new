@@ -80,6 +80,8 @@ label textarea{resize:vertical}
 .rte .ql-container.ql-snow{border:none;font-family:inherit;font-size:14px}
 .rte .ql-editor{min-height:160px;line-height:1.55}
 .rte .ql-editor img{max-width:280px;max-height:220px;width:auto;height:auto;object-fit:cover;border-radius:var(--r);cursor:pointer}
+.rte .ql-editor iframe.ql-video{width:100%;max-width:480px;aspect-ratio:16/9;height:auto;border-radius:var(--r)}
+.rte .ql-editor video{max-width:100%;border-radius:var(--r);display:block}
 .rte .ql-editor.ql-blank::before{color:#9aa3ad;font-style:normal}
 .rte-modebar{display:flex;gap:2px;padding:6px 6px 0;background:var(--paper);border-bottom:1px solid var(--line-dk)}
 .rte-mode-btn{background:transparent;border:none;border-radius:var(--r) var(--r) 0 0;padding:6px 12px;font-size:12px;font-weight:600;color:var(--steel);cursor:pointer}
