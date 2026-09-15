@@ -1,5 +1,701 @@
 [
   {
+    "id": "mu2ah1vd1uzov",
+    "title": "Boys Hostel Building",
+    "slug": "boys-hostel-building",
+    "status": "Completed",
+    "content": "<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>",
+    "category": "Residential",
+    "tags": [],
+    "images": [
+      {
+        "url": "https://faak0js5bca1hkm3.public.blob.vercel-storage.com/uploads/1789452241950-phs79x-cooming_soon-G7nWOIP2Do83qQqaaLsdTaULRCSB1i.png"
+      }
+    ],
+    "photoCaption": "",
+    "photoCredit": "",
+    "table": {
+      "headers": [
+        "Field",
+        "Value"
+      ],
+      "rows": [
+        [
+          "Description",
+          "G+7 Floor ( 2 Block)"
+        ],
+        [
+          "Site location",
+          "Wagodiya - Vadodara"
+        ],
+        [
+          "Built up area in Sqft",
+          "241,466.00"
+        ],
+        [
+          "Type of Project",
+          "Residential"
+        ],
+        [
+          "Date of Commencement of Works",
+          "3/18/2025"
+        ],
+        [
+          "Date of Completion of Works",
+          "1/15/2026"
+        ],
+        [
+          "Project Duration in Years",
+          "0.83"
+        ],
+        [
+          "Contract value in Cr",
+          "41.00"
+        ]
+      ]
+    },
+    "date": "2026-09-15",
+    "published": true
+  },
+  {
+    "id": "mu2ah1vdv6tqp",
+    "title": "Oswal Bhavan",
+    "slug": "oswal-bhavan",
+    "status": "Completed",
+    "content": "<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>",
+    "category": "Commercial",
+    "tags": [],
+    "images": [
+      {
+        "url": "https://faak0js5bca1hkm3.public.blob.vercel-storage.com/uploads/1789452241950-phs79x-cooming_soon-G7nWOIP2Do83qQqaaLsdTaULRCSB1i.png"
+      }
+    ],
+    "photoCaption": "",
+    "photoCredit": "",
+    "table": {
+      "headers": [
+        "Field",
+        "Value"
+      ],
+      "rows": [
+        [
+          "Description",
+          "2B+G+6 Floor"
+        ],
+        [
+          "Site location",
+          "Sahibaugh - Ahmedabad"
+        ],
+        [
+          "Built up area in Sqft",
+          "139,000.00"
+        ],
+        [
+          "Type of Project",
+          "Commercial"
+        ],
+        [
+          "Date of Commencement of Works",
+          "29/12/2023"
+        ],
+        [
+          "Date of Completion of Works",
+          "15/12/2025"
+        ],
+        [
+          "Project Duration in Years",
+          "1.96"
+        ],
+        [
+          "Contract value in Cr",
+          "7.22"
+        ]
+      ]
+    },
+    "date": "2026-09-15",
+    "published": true
+  },
+  {
+    "id": "mu2ah1vce52lp",
+    "title": "The Garden",
+    "slug": "the-garden",
+    "status": "Completed",
+    "content": "<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>",
+    "category": "Residential",
+    "tags": [],
+    "images": [
+      {
+        "url": "https://faak0js5bca1hkm3.public.blob.vercel-storage.com/uploads/1789452241950-phs79x-cooming_soon-G7nWOIP2Do83qQqaaLsdTaULRCSB1i.png"
+      }
+    ],
+    "photoCaption": "",
+    "photoCredit": "",
+    "table": {
+      "headers": [
+        "Field",
+        "Value"
+      ],
+      "rows": [
+        [
+          "Description",
+          "G+2 Floor (17 Nos Villas)"
+        ],
+        [
+          "Site location",
+          "Shilaj - Ahmedabad"
+        ],
+        [
+          "Built up area in Sqft",
+          "54,000.00"
+        ],
+        [
+          "Type of Project",
+          "Residential"
+        ],
+        [
+          "Date of Commencement of Works",
+          "11/12/2022"
+        ],
+        [
+          "Date of Completion of Works",
+          "10/9/2024"
+        ],
+        [
+          "Project Duration in Years",
+          "1.75"
+        ],
+        [
+          "Contract value in Cr",
+          "5.60"
+        ]
+      ]
+    },
+    "date": "2026-09-15",
+    "published": true
+  },
+  {
+    "id": "mu2ah1vcmbs8y",
+    "title": "Money Plant Residency",
+    "slug": "money-plant-residency",
+    "status": "Completed",
+    "content": "<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>",
+    "category": "Residential",
+    "tags": [],
+    "images": [
+      {
+        "url": "https://faak0js5bca1hkm3.public.blob.vercel-storage.com/uploads/1789452241950-phs79x-cooming_soon-G7nWOIP2Do83qQqaaLsdTaULRCSB1i.png"
+      }
+    ],
+    "photoCaption": "",
+    "photoCredit": "",
+    "table": {
+      "headers": [
+        "Field",
+        "Value"
+      ],
+      "rows": [
+        [
+          "Description",
+          "Residencial Appartment 2B+G+14th Floor"
+        ],
+        [
+          "Site location",
+          "Ahmedabad-Vadaj"
+        ],
+        [
+          "Built up area in Sqft",
+          "125,358.00"
+        ],
+        [
+          "Type of Project",
+          "Residential"
+        ],
+        [
+          "Date of Commencement of Works",
+          "23/1/2023"
+        ],
+        [
+          "Date of Completion of Works",
+          "2/25/2025"
+        ],
+        [
+          "Project Duration in Years",
+          "2.09"
+        ],
+        [
+          "Contract value in Cr",
+          "16.01"
+        ]
+      ]
+    },
+    "date": "2026-09-15",
+    "published": true
+  },
+  {
+    "id": "mu2ah1vc3r846",
+    "title": "Archit Organosys Ltd.",
+    "slug": "archit-organosys-ltd",
+    "status": "Ongoing",
+    "content": "<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>",
+    "category": "Industrial",
+    "tags": [],
+    "images": [
+      {
+        "url": "https://faak0js5bca1hkm3.public.blob.vercel-storage.com/uploads/1789452241950-phs79x-cooming_soon-G7nWOIP2Do83qQqaaLsdTaULRCSB1i.png"
+      }
+    ],
+    "photoCaption": "",
+    "photoCredit": "",
+    "table": {
+      "headers": [
+        "Field",
+        "Value"
+      ],
+      "rows": [
+        [
+          "Description",
+          "Archit Amin Construction of Chemical Plant"
+        ],
+        [
+          "Site location",
+          "Ahmedabad-Naroda GIDC"
+        ],
+        [
+          "Built up area in Sqft",
+          "80,700.00"
+        ],
+        [
+          "Type of Project",
+          "Industrial"
+        ],
+        [
+          "Date of Commencement of Works",
+          "22/11/2023"
+        ],
+        [
+          "Date of Completion of Works",
+          "-"
+        ],
+        [
+          "Project Duration in Years",
+          "1 Year"
+        ],
+        [
+          "Contract value in Cr",
+          "-"
+        ]
+      ]
+    },
+    "date": "2026-09-15",
+    "published": true
+  },
+  {
+    "id": "mu2ah1vcp3un5",
+    "title": "Vann care Pharma",
+    "slug": "vann-care-pharma",
+    "status": "Completed",
+    "content": "<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>",
+    "category": "Industrial",
+    "tags": [],
+    "images": [
+      {
+        "url": "https://faak0js5bca1hkm3.public.blob.vercel-storage.com/uploads/1789452241950-phs79x-cooming_soon-G7nWOIP2Do83qQqaaLsdTaULRCSB1i.png"
+      }
+    ],
+    "photoCaption": "",
+    "photoCredit": "",
+    "table": {
+      "headers": [
+        "Field",
+        "Value"
+      ],
+      "rows": [
+        [
+          "Description",
+          "Construction of Pharma building"
+        ],
+        [
+          "Site location",
+          "Super Industrial Park Bhayla - Bavla"
+        ],
+        [
+          "Built up area in Sqft",
+          "53,800.00"
+        ],
+        [
+          "Type of Project",
+          "Industrial"
+        ],
+        [
+          "Date of Commencement of Works",
+          "10/4/2022"
+        ],
+        [
+          "Date of Completion of Works",
+          "8/24/2023"
+        ],
+        [
+          "Project Duration in Years",
+          "0.89"
+        ],
+        [
+          "Contract value in Cr",
+          "3.80"
+        ]
+      ]
+    },
+    "date": "2026-09-15",
+    "published": true
+  },
+  {
+    "id": "mu2ah1vc772bg",
+    "title": "Shivam Elegance",
+    "slug": "shivam-elegance",
+    "status": "Completed",
+    "content": "<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>",
+    "category": "Residential",
+    "tags": [],
+    "images": [
+      {
+        "url": "https://faak0js5bca1hkm3.public.blob.vercel-storage.com/uploads/1789452241950-phs79x-cooming_soon-G7nWOIP2Do83qQqaaLsdTaULRCSB1i.png"
+      }
+    ],
+    "photoCaption": "",
+    "photoCredit": "",
+    "table": {
+      "headers": [
+        "Field",
+        "Value"
+      ],
+      "rows": [
+        [
+          "Description",
+          "Construction Of 1B+G+7 Residencial Building"
+        ],
+        [
+          "Site location",
+          "Ahmedabad -Navarangpura"
+        ],
+        [
+          "Built up area in Sqft",
+          "52,900.00"
+        ],
+        [
+          "Type of Project",
+          "Residential"
+        ],
+        [
+          "Date of Commencement of Works",
+          "8/23/2022"
+        ],
+        [
+          "Date of Completion of Works",
+          "9/22/2023"
+        ],
+        [
+          "Project Duration in Years",
+          "1.08"
+        ],
+        [
+          "Contract value in Cr",
+          "1.38"
+        ]
+      ]
+    },
+    "date": "2026-09-15",
+    "published": true
+  },
+  {
+    "id": "mu2ah1vcdz1m3",
+    "title": "Sunray",
+    "slug": "sunray",
+    "status": "Ongoing",
+    "content": "<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>",
+    "category": "Industrial",
+    "tags": [],
+    "images": [
+      {
+        "url": "https://faak0js5bca1hkm3.public.blob.vercel-storage.com/uploads/1789452241950-phs79x-cooming_soon-G7nWOIP2Do83qQqaaLsdTaULRCSB1i.png"
+      }
+    ],
+    "photoCaption": "",
+    "photoCredit": "",
+    "table": {
+      "headers": [
+        "Field",
+        "Value"
+      ],
+      "rows": [
+        [
+          "Description",
+          "Industrial Plant"
+        ],
+        [
+          "Site location",
+          "Ahmedabad-Bavla"
+        ],
+        [
+          "Built up area in Sqft",
+          "85,000.00"
+        ],
+        [
+          "Type of Project",
+          "Industrial"
+        ],
+        [
+          "Date of Commencement of Works",
+          "-"
+        ],
+        [
+          "Date of Completion of Works",
+          "-"
+        ],
+        [
+          "Project Duration in Years",
+          "1 Year"
+        ],
+        [
+          "Contract value in Cr",
+          "2.97"
+        ]
+      ]
+    },
+    "date": "2026-09-15",
+    "published": true
+  },
+  {
+    "id": "mu2ah1vcn1f3s",
+    "title": "Indofil Industries Ltd.",
+    "slug": "indofil-industries-ltd",
+    "status": "Completed",
+    "content": "<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>",
+    "category": "Industrial",
+    "tags": [],
+    "images": [
+      {
+        "url": "https://faak0js5bca1hkm3.public.blob.vercel-storage.com/uploads/1789452241950-phs79x-cooming_soon-G7nWOIP2Do83qQqaaLsdTaULRCSB1i.png"
+      }
+    ],
+    "photoCaption": "",
+    "photoCredit": "",
+    "table": {
+      "headers": [
+        "Field",
+        "Value"
+      ],
+      "rows": [
+        [
+          "Description",
+          "Construction Of Liquid Section Plan"
+        ],
+        [
+          "Site location",
+          "Dahej-GIDC - Unit 3"
+        ],
+        [
+          "Built up area in Sqft",
+          "9,651.00"
+        ],
+        [
+          "Type of Project",
+          "Industrial"
+        ],
+        [
+          "Date of Commencement of Works",
+          "7/7/2022"
+        ],
+        [
+          "Date of Completion of Works",
+          "8/22/2023"
+        ],
+        [
+          "Project Duration in Years",
+          "1.13"
+        ],
+        [
+          "Contract value in Cr",
+          "2.48"
+        ]
+      ]
+    },
+    "date": "2026-09-15",
+    "published": true
+  },
+  {
+    "id": "mu2ah1vc7zcst",
+    "title": "Adani Jain Gyan Bhandar",
+    "slug": "adani-jain-gyan-bhandar",
+    "status": "Ongoing",
+    "content": "<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>",
+    "category": "Residential",
+    "tags": [],
+    "images": [
+      {
+        "url": "https://faak0js5bca1hkm3.public.blob.vercel-storage.com/uploads/1789452241950-phs79x-cooming_soon-G7nWOIP2Do83qQqaaLsdTaULRCSB1i.png"
+      }
+    ],
+    "photoCaption": "",
+    "photoCredit": "",
+    "table": {
+      "headers": [
+        "Field",
+        "Value"
+      ],
+      "rows": [
+        [
+          "Description",
+          "Construction of Jain Sadhuji & Sadhviji Building"
+        ],
+        [
+          "Site location",
+          "Ahmedabad"
+        ],
+        [
+          "Built up area in Sqft",
+          "20100"
+        ],
+        [
+          "Type of Project",
+          "Residential"
+        ],
+        [
+          "Date of Commencement of Works",
+          "2/22/2023"
+        ],
+        [
+          "Date of Completion of Works",
+          "-"
+        ],
+        [
+          "Project Duration in Years",
+          "1 Year"
+        ],
+        [
+          "Contract value in Cr",
+          "90"
+        ]
+      ]
+    },
+    "date": "2026-09-15",
+    "published": true
+  },
+  {
+    "id": "mu2ah1vcltpla",
+    "title": "Oorjita Villa",
+    "slug": "oorjita-villa",
+    "status": "Completed",
+    "content": "<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>",
+    "category": "Residential",
+    "tags": [],
+    "images": [
+      {
+        "url": "https://faak0js5bca1hkm3.public.blob.vercel-storage.com/uploads/1789452241950-phs79x-cooming_soon-G7nWOIP2Do83qQqaaLsdTaULRCSB1i.png"
+      }
+    ],
+    "photoCaption": "",
+    "photoCredit": "",
+    "table": {
+      "headers": [
+        "Field",
+        "Value"
+      ],
+      "rows": [
+        [
+          "Description",
+          "Construction of Villa"
+        ],
+        [
+          "Site location",
+          "Hydrabad"
+        ],
+        [
+          "Built up area in Sqft",
+          "43,000.00"
+        ],
+        [
+          "Type of Project",
+          "Residential"
+        ],
+        [
+          "Date of Commencement of Works",
+          "10/1/2020"
+        ],
+        [
+          "Date of Completion of Works",
+          "2/22/2023"
+        ],
+        [
+          "Project Duration in Years",
+          "2.39"
+        ],
+        [
+          "Contract value in Cr",
+          "2.83"
+        ]
+      ]
+    },
+    "date": "2026-09-15",
+    "published": true
+  },
+  {
+    "id": "mu2ah1vccko7s",
+    "title": "Casa Lake view-Pacifica",
+    "slug": "casa-lake-view-pacifica",
+    "status": "Completed",
+    "content": "<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>",
+    "category": "Residential",
+    "tags": [],
+    "images": [
+      {
+        "url": "https://faak0js5bca1hkm3.public.blob.vercel-storage.com/uploads/1789452241950-phs79x-cooming_soon-G7nWOIP2Do83qQqaaLsdTaULRCSB1i.png"
+      }
+    ],
+    "photoCaption": "",
+    "photoCredit": "",
+    "table": {
+      "headers": [
+        "Field",
+        "Value"
+      ],
+      "rows": [
+        [
+          "Description",
+          "Construction of Residential villa"
+        ],
+        [
+          "Site location",
+          "Vadodara"
+        ],
+        [
+          "Built up area in Sqft",
+          "20000"
+        ],
+        [
+          "Type of Project",
+          "Residential"
+        ],
+        [
+          "Date of Commencement of Works",
+          "28/02/19"
+        ],
+        [
+          "Date of Completion of Works",
+          "12/10/2019"
+        ],
+        [
+          "Project Duration in Years",
+          "0.78"
+        ],
+        [
+          "Contract value in Cr",
+          "6.23"
+        ]
+      ]
+    },
+    "date": "2026-09-15",
+    "published": true
+  },
+  {
     "id": "mu2a16ggss2z4",
     "title": "Mediventa Hospital & College",
     "slug": "mediventa-hospital-college",
