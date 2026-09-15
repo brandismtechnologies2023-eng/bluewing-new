@@ -3,8 +3,10 @@ const jwt = require('jsonwebtoken');
 const SECRET = process.env.JWT_SECRET || 'bluewing-fallback-secret-change-me-738483';
 const COOKIE_NAME = 'bw_admin_session';
 
+const SESSION_MAX_AGE = 24 * 60 * 60; // 24 hours, renewed on activity
+
 function signSession(username) {
-  return jwt.sign({ u: username }, SECRET, { expiresIn: '7d' });
+  return jwt.sign({ u: username }, SECRET, { expiresIn: SESSION_MAX_AGE });
 }
 
 function parseCookies(req) {
@@ -21,12 +23,18 @@ function parseCookies(req) {
   return out;
 }
 
-function isAuthed(req) {
+function isAuthed(req, res) {
   try {
     const cookies = parseCookies(req);
     const token = cookies[COOKIE_NAME];
     if (!token) return false;
-    jwt.verify(token, SECRET);
+    const payload = jwt.verify(token, SECRET);
+    if (res) {
+      // Sliding expiration: any authenticated activity renews the 24h window.
+      // If the device sits idle for 24h with no requests, the token expires
+      // and the next request fails verification, forcing a re-login.
+      setSessionCookie(res, signSession(payload.u));
+    }
     return true;
   } catch (e) {
     return false;
@@ -34,7 +42,7 @@ function isAuthed(req) {
 }
 
 function requireAuth(req, res) {
-  if (!isAuthed(req)) {
+  if (!isAuthed(req, res)) {
     res.status(401).json({ error: 'Not authenticated' });
     return false;
   }
@@ -42,10 +50,9 @@ function requireAuth(req, res) {
 }
 
 function setSessionCookie(res, token) {
-  const maxAge = 7 * 24 * 60 * 60;
   res.setHeader(
     'Set-Cookie',
-    `${COOKIE_NAME}=${encodeURIComponent(token)}; Path=/; HttpOnly; Secure; SameSite=Lax; Max-Age=${maxAge}`
+    `${COOKIE_NAME}=${encodeURIComponent(token)}; Path=/; HttpOnly; Secure; SameSite=Lax; Max-Age=${SESSION_MAX_AGE}`
   );
 }
 
