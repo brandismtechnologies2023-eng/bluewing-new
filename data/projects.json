@@ -1,5 +1,687 @@
 [
   {
+    "id": "mu2a16ggss2z4",
+    "title": "Mediventa Hospital & College",
+    "slug": "mediventa-hospital-college",
+    "status": "Ongoing",
+    "content": "<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>",
+    "category": "Hospitals",
+    "tags": [],
+    "images": [
+      {
+        "url": "https://faak0js5bca1hkm3.public.blob.vercel-storage.com/uploads/1789452241950-phs79x-cooming_soon-G7nWOIP2Do83qQqaaLsdTaULRCSB1i.png"
+      }
+    ],
+    "photoCaption": "",
+    "photoCredit": "",
+    "table": {
+      "headers": [
+        "Field",
+        "Value"
+      ],
+      "rows": [
+        [
+          "Client",
+          "Jivan sandhya cheritable truct"
+        ],
+        [
+          "Scope of Work",
+          "Earthwork, Core & Shell Work"
+        ],
+        [
+          "Description",
+          "G+5 Building"
+        ],
+        [
+          "Site location",
+          "Teniwada, Palnpur"
+        ],
+        [
+          "Built up area in Sqft",
+          "750,000.00"
+        ],
+        [
+          "Estimated contract value in Cr",
+          "68.00"
+        ],
+        [
+          "Type of structure",
+          "Hospital"
+        ],
+        [
+          "Starting Date",
+          "-"
+        ],
+        [
+          "Project Duration",
+          "-"
+        ]
+      ]
+    },
+    "date": "2026-09-15",
+    "published": true
+  },
+  {
+    "id": "mu2a16gg0c3ao",
+    "title": "College Building of Parul University",
+    "slug": "college-building-of-parul-university",
+    "status": "Ongoing",
+    "content": "<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>",
+    "category": "Institutional",
+    "tags": [],
+    "images": [
+      {
+        "url": "https://faak0js5bca1hkm3.public.blob.vercel-storage.com/uploads/1789452241950-phs79x-cooming_soon-G7nWOIP2Do83qQqaaLsdTaULRCSB1i.png"
+      }
+    ],
+    "photoCaption": "",
+    "photoCredit": "",
+    "table": {
+      "headers": [
+        "Field",
+        "Value"
+      ],
+      "rows": [
+        [
+          "Client",
+          "Parul University Vadodara"
+        ],
+        [
+          "Scope of Work",
+          "Turnkey Project With Diaphragm Wall"
+        ],
+        [
+          "Description",
+          "2B+G+7 Floor"
+        ],
+        [
+          "Site location",
+          "Bopal ahmedabad"
+        ],
+        [
+          "Built up area in Sqft",
+          "63,875.00"
+        ],
+        [
+          "Estimated contract value in Cr",
+          "15.50"
+        ],
+        [
+          "Type of structure",
+          "Educational"
+        ],
+        [
+          "Starting Date",
+          "-"
+        ],
+        [
+          "Project Duration",
+          "-"
+        ]
+      ]
+    },
+    "date": "2026-09-15",
+    "published": true
+  },
+  {
+    "id": "mu2a16ggjj0gy",
+    "title": "Cold Storage Wharehouse",
+    "slug": "cold-storage-wharehouse",
+    "status": "Ongoing",
+    "content": "<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>",
+    "category": "Industrial",
+    "tags": [],
+    "images": [
+      {
+        "url": "https://faak0js5bca1hkm3.public.blob.vercel-storage.com/uploads/1789452241950-phs79x-cooming_soon-G7nWOIP2Do83qQqaaLsdTaULRCSB1i.png"
+      }
+    ],
+    "photoCaption": "",
+    "photoCredit": "",
+    "table": {
+      "headers": [
+        "Field",
+        "Value"
+      ],
+      "rows": [
+        [
+          "Client",
+          "FRO STORE LOGISTICS PVT.LTD."
+        ],
+        [
+          "Scope of Work",
+          "Turnkey Project With PEB Structure"
+        ],
+        [
+          "Description",
+          "Ground Floor"
+        ],
+        [
+          "Site location",
+          "Dekavada @ viramgam"
+        ],
+        [
+          "Built up area in Sqft",
+          "112,415.00"
+        ],
+        [
+          "Estimated contract value in Cr",
+          "17.35"
+        ],
+        [
+          "Type of structure",
+          "Industrial"
+        ],
+        [
+          "Starting Date",
+          "1/3/2026"
+        ],
+        [
+          "Project Duration",
+          "04 MONTH"
+        ]
+      ]
+    },
+    "date": "2026-09-15",
+    "published": true
+  },
+  {
+    "id": "mu2a16gggt0ai",
+    "title": "Gov, Medical College & Hospital Building",
+    "slug": "gov-medical-college-hospital-building",
+    "status": "Ongoing",
+    "content": "<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>",
+    "category": "Hospitals",
+    "tags": [],
+    "images": [
+      {
+        "url": "https://faak0js5bca1hkm3.public.blob.vercel-storage.com/uploads/1789452241950-phs79x-cooming_soon-G7nWOIP2Do83qQqaaLsdTaULRCSB1i.png"
+      }
+    ],
+    "photoCaption": "",
+    "photoCredit": "",
+    "table": {
+      "headers": [
+        "Field",
+        "Value"
+      ],
+      "rows": [
+        [
+          "Client",
+          "PIU"
+        ],
+        [
+          "Scope of Work",
+          "Core & Shell"
+        ],
+        [
+          "Description",
+          "1B+G+9 Floor"
+        ],
+        [
+          "Site location",
+          "Bhavanagar"
+        ],
+        [
+          "Built up area in Sqft",
+          "1,700,000.00"
+        ],
+        [
+          "Estimated contract value in Cr",
+          "63.48"
+        ],
+        [
+          "Type of structure",
+          "Medical Building"
+        ],
+        [
+          "Starting Date",
+          "1/1/2026"
+        ],
+        [
+          "Project Duration",
+          "20 MONTH"
+        ]
+      ]
+    },
+    "date": "2026-09-15",
+    "published": true
+  },
+  {
+    "id": "mu2a16ggb4ukj",
+    "title": "Anmol One",
+    "slug": "anmol-one",
+    "status": "Ongoing",
+    "content": "<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>",
+    "category": "Commercial",
+    "tags": [],
+    "images": [
+      {
+        "url": "https://faak0js5bca1hkm3.public.blob.vercel-storage.com/uploads/1789452241950-phs79x-cooming_soon-G7nWOIP2Do83qQqaaLsdTaULRCSB1i.png"
+      }
+    ],
+    "photoCaption": "",
+    "photoCredit": "",
+    "table": {
+      "headers": [
+        "Field",
+        "Value"
+      ],
+      "rows": [
+        [
+          "Client",
+          "Anmol Infrabuild LLP"
+        ],
+        [
+          "Scope of Work",
+          "Core & Shell"
+        ],
+        [
+          "Description",
+          "3B+G+12 Floor"
+        ],
+        [
+          "Site location",
+          "Nr Iscon Tample - Ambali Road-"
+        ],
+        [
+          "Built up area in Sqft",
+          "128,000.00"
+        ],
+        [
+          "Estimated contract value in Cr",
+          "6.52"
+        ],
+        [
+          "Type of structure",
+          "Commercial"
+        ],
+        [
+          "Starting Date",
+          "19/1/2026"
+        ],
+        [
+          "Project Duration",
+          "19 MONTH"
+        ]
+      ]
+    },
+    "date": "2026-09-15",
+    "published": true
+  },
+  {
+    "id": "mu2a16ggimtf9",
+    "title": "Swarnim Greens",
+    "slug": "swarnim-greens",
+    "status": "Ongoing",
+    "content": "<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>",
+    "category": "Residential",
+    "tags": [],
+    "images": [
+      {
+        "url": "https://faak0js5bca1hkm3.public.blob.vercel-storage.com/uploads/1789452241950-phs79x-cooming_soon-G7nWOIP2Do83qQqaaLsdTaULRCSB1i.png"
+      }
+    ],
+    "photoCaption": "",
+    "photoCredit": "",
+    "table": {
+      "headers": [
+        "Field",
+        "Value"
+      ],
+      "rows": [
+        [
+          "Client",
+          "Swarnim Group"
+        ],
+        [
+          "Scope of Work",
+          "Turnkey Project"
+        ],
+        [
+          "Description",
+          "2B+G+20 Floor"
+        ],
+        [
+          "Site location",
+          "Adalaj"
+        ],
+        [
+          "Built up area in Sqft",
+          "247,620.00"
+        ],
+        [
+          "Estimated contract value in Cr",
+          "14.39"
+        ],
+        [
+          "Type of structure",
+          "Residential"
+        ],
+        [
+          "Starting Date",
+          "15/11/2025"
+        ],
+        [
+          "Project Duration",
+          "24 MONTH"
+        ]
+      ]
+    },
+    "date": "2026-09-15",
+    "published": true
+  },
+  {
+    "id": "mu2a16ggrj8x6",
+    "title": "Sadvichar : Mahila Uttkarsh Kendra",
+    "slug": "sadvichar-mahila-uttkarsh-kendra",
+    "status": "Ongoing",
+    "content": "<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>",
+    "category": "Residential",
+    "tags": [],
+    "images": [
+      {
+        "url": "https://faak0js5bca1hkm3.public.blob.vercel-storage.com/uploads/1789452241950-phs79x-cooming_soon-G7nWOIP2Do83qQqaaLsdTaULRCSB1i.png"
+      }
+    ],
+    "photoCaption": "",
+    "photoCredit": "",
+    "table": {
+      "headers": [
+        "Field",
+        "Value"
+      ],
+      "rows": [
+        [
+          "Client",
+          "Sadvichar Parivar"
+        ],
+        [
+          "Scope of Work",
+          "Turnkey Project"
+        ],
+        [
+          "Description",
+          "G+3 Floor"
+        ],
+        [
+          "Site location",
+          "Sattelite"
+        ],
+        [
+          "Built up area in Sqft",
+          "26,878.00"
+        ],
+        [
+          "Estimated contract value in Cr",
+          "6.30"
+        ],
+        [
+          "Type of structure",
+          "Residential"
+        ],
+        [
+          "Starting Date",
+          "4/3/2025"
+        ],
+        [
+          "Project Duration",
+          "15 MONTH"
+        ]
+      ]
+    },
+    "date": "2026-09-15",
+    "published": true
+  },
+  {
+    "id": "mu2a16ggtx4sh",
+    "title": "TRA- Aalay",
+    "slug": "tra-aalay",
+    "status": "Ongoing",
+    "content": "<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>",
+    "category": "Residential",
+    "tags": [],
+    "images": [
+      {
+        "url": "https://faak0js5bca1hkm3.public.blob.vercel-storage.com/uploads/1789452241950-phs79x-cooming_soon-G7nWOIP2Do83qQqaaLsdTaULRCSB1i.png"
+      }
+    ],
+    "photoCaption": "",
+    "photoCredit": "",
+    "table": {
+      "headers": [
+        "Field",
+        "Value"
+      ],
+      "rows": [
+        [
+          "Client",
+          "The Real Asset India LLP."
+        ],
+        [
+          "Scope of Work",
+          "Core & Shell"
+        ],
+        [
+          "Description",
+          "2B+G+14 Floor (2 Block)"
+        ],
+        [
+          "Site location",
+          "Shela-Ahmedabad"
+        ],
+        [
+          "Built up area in Sqft",
+          "206,795.00"
+        ],
+        [
+          "Estimated contract value in Cr",
+          "10.84"
+        ],
+        [
+          "Type of structure",
+          "Residential"
+        ],
+        [
+          "Starting Date",
+          "23/6/2024"
+        ],
+        [
+          "Project Duration",
+          "17 MONTH"
+        ]
+      ]
+    },
+    "date": "2026-09-15",
+    "published": true
+  },
+  {
+    "id": "mu2a16gg6k3li",
+    "title": "Shivalik- Parklane",
+    "slug": "shivalik-parklane",
+    "status": "Ongoing",
+    "content": "<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>",
+    "category": "Residential",
+    "tags": [],
+    "images": [
+      {
+        "url": "https://faak0js5bca1hkm3.public.blob.vercel-storage.com/uploads/1789452241950-phs79x-cooming_soon-G7nWOIP2Do83qQqaaLsdTaULRCSB1i.png"
+      }
+    ],
+    "photoCaption": "",
+    "photoCredit": "",
+    "table": {
+      "headers": [
+        "Field",
+        "Value"
+      ],
+      "rows": [
+        [
+          "Client",
+          "Sidhhi Develiopers & Builders"
+        ],
+        [
+          "Scope of Work",
+          "Core & Shell"
+        ],
+        [
+          "Description",
+          "2B+G+13 Floor"
+        ],
+        [
+          "Site location",
+          "Shivranjani - Ahmedabad"
+        ],
+        [
+          "Built up area in Sqft",
+          "342,927.00"
+        ],
+        [
+          "Estimated contract value in Cr",
+          "32.74"
+        ],
+        [
+          "Type of structure",
+          "Residential"
+        ],
+        [
+          "Starting Date",
+          "20/5/2024"
+        ],
+        [
+          "Project Duration",
+          "18 MONTH"
+        ]
+      ]
+    },
+    "date": "2026-09-15",
+    "published": true
+  },
+  {
+    "id": "mu2a16ggyneum",
+    "title": "Police Houshing @ Khalal",
+    "slug": "police-houshing-khalal",
+    "status": "Ongoing",
+    "content": "<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>",
+    "category": "Residential",
+    "tags": [],
+    "images": [
+      {
+        "url": "https://faak0js5bca1hkm3.public.blob.vercel-storage.com/uploads/1789452241950-phs79x-cooming_soon-G7nWOIP2Do83qQqaaLsdTaULRCSB1i.png"
+      }
+    ],
+    "photoCaption": "",
+    "photoCredit": "",
+    "table": {
+      "headers": [
+        "Field",
+        "Value"
+      ],
+      "rows": [
+        [
+          "Client",
+          "Gujarat State Police Housing Corporation Ltd."
+        ],
+        [
+          "Scope of Work",
+          "Core & Shell"
+        ],
+        [
+          "Description",
+          "22 Building"
+        ],
+        [
+          "Site location",
+          "Khalal- Kathlal"
+        ],
+        [
+          "Built up area in Sqft",
+          "425,000.00"
+        ],
+        [
+          "Estimated contract value in Cr",
+          "13.00"
+        ],
+        [
+          "Type of structure",
+          "Houshing"
+        ],
+        [
+          "Starting Date",
+          "17/1/2024"
+        ],
+        [
+          "Project Duration",
+          "9 Month - For individual Building"
+        ]
+      ]
+    },
+    "date": "2026-09-15",
+    "published": true
+  },
+  {
+    "id": "mu2a16gf5i82w",
+    "title": "The Address",
+    "slug": "the-address",
+    "status": "Ongoing",
+    "content": "<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>",
+    "category": "Commercial",
+    "tags": [],
+    "images": [
+      {
+        "url": "https://faak0js5bca1hkm3.public.blob.vercel-storage.com/uploads/1789452241950-phs79x-cooming_soon-G7nWOIP2Do83qQqaaLsdTaULRCSB1i.png"
+      }
+    ],
+    "photoCaption": "",
+    "photoCredit": "",
+    "table": {
+      "headers": [
+        "Field",
+        "Value"
+      ],
+      "rows": [
+        [
+          "Client",
+          "Gopinath Developers"
+        ],
+        [
+          "Scope of Work",
+          "Turnkey Project"
+        ],
+        [
+          "Description",
+          "4B+G+12 Floor"
+        ],
+        [
+          "Site location",
+          "Gandhinagar"
+        ],
+        [
+          "Built up area in Sqft",
+          "613,000.00"
+        ],
+        [
+          "Estimated contract value in Cr",
+          "26.66"
+        ],
+        [
+          "Type of structure",
+          "Commercial"
+        ],
+        [
+          "Starting Date",
+          "12/12/2024"
+        ],
+        [
+          "Project Duration",
+          "26 MONTH"
+        ]
+      ]
+    },
+    "date": "2026-09-15",
+    "published": true
+  },
+  {
     "id": "legacy-3-by-oyo-hotel-nami-residency-ahmedabad",
     "title": "3 by OYO (Hotel Nami Residency)",
     "slug": "3-by-oyo-hotel-nami-residency-ahmedabad",
@@ -1614,6 +2296,10 @@
         "Value"
       ],
       "rows": [
+        [
+          "Client",
+          "Shrim leela Infra Build LLP"
+        ],
         [
           "Scope of Work",
           "Turnkey Project"
